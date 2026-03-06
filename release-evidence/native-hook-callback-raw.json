@@ -1,0 +1,36 @@
+{
+  "toolName": "item/commandExecution/requestApproval",
+  "decision": "accept",
+  "reasonCode": "LIVE_NATIVE_APPROVAL_CAPTURED",
+  "callbackPayload": {
+    "method": "item/commandExecution/requestApproval",
+    "id": 0,
+    "params": {
+      "threadId": "019cc443-c4d3-78f0-ba51-c5e782793f5f",
+      "turnId": "019cc443-c4ff-7e42-95a1-afb72f6e30f2",
+      "itemId": "call_JtLvcRmny9E7Lq9ivf6VgPA2",
+      "reason": "Do you want to allow appending the requested line to release-evidence/native-approval-proof.tmp?",
+      "command": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -Command \"Add-Content -Path 'release-evidence/native-approval-proof.tmp' -Value 'TEST_BRIDGE_CAPTURE'\"",
+      "cwd": "C:\\dev\\codex-trusted-mode",
+      "commandActions": [
+        {
+          "type": "unknown",
+          "command": "Add-Content -Path 'release-evidence/native-approval-proof.tmp' -Value 'TEST_BRIDGE_CAPTURE'"
+        }
+      ],
+      "availableDecisions": [
+        "accept",
+        {
+          "acceptWithExecpolicyAmendment": {
+            "execpolicy_amendment": [
+              "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+              "-Command",
+              "Add-Content -Path 'release-evidence/native-approval-proof.tmp' -Value 'TEST_BRIDGE_CAPTURE'"
+            ]
+          }
+        },
+        "cancel"
+      ]
+    }
+  }
+}

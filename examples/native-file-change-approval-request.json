@@ -1,0 +1,11 @@
+{
+  "id": "approval-2",
+  "method": "item/fileChange/requestApproval",
+  "params": {
+    "itemId": "item-approval-2",
+    "threadId": "thread-approval-1",
+    "turnId": "turn-approval-1",
+    "grantRoot": "C:\\dev\\codex-trusted-mode",
+    "reason": "Requesting write access"
+  }
+}

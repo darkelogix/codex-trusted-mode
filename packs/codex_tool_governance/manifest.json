@@ -1,0 +1,9 @@
+{
+  "packId": "codex-tool-governance",
+  "version": "0.1.0",
+  "contractId": "codex-tool-governance",
+  "contractVersion": "0.1.0",
+  "supportedRuntimes": ["codex"],
+  "governedTools": ["functions.shell_command", "functions.apply_patch"],
+  "decisionOutputs": ["allow", "deny", "constrain"]
+}

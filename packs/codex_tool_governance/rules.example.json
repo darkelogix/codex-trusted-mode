@@ -1,0 +1,30 @@
+{
+  "rules": [
+    {
+      "id": "readonly-shell-allow",
+      "when": {
+        "toolName": "functions.shell_command",
+        "commandPrefixesAny": ["Get-ChildItem", "Get-Content", "rg", "git status", "git diff", "git show", "pwd", "ls", "cat"]
+      },
+      "decision": "allow",
+      "reasonCode": "PDP_READONLY_SHELL_ALLOW"
+    },
+    {
+      "id": "shell-mutation-deny",
+      "when": {
+        "toolName": "functions.shell_command",
+        "commandPrefixesAny": ["git commit", "git push", "Remove-Item", "Set-Content", "Out-File"]
+      },
+      "decision": "deny",
+      "reasonCode": "PDP_MUTATING_SHELL_DENY"
+    },
+    {
+      "id": "apply-patch-deny",
+      "when": {
+        "toolName": "functions.apply_patch"
+      },
+      "decision": "deny",
+      "reasonCode": "PDP_PATCH_DENY"
+    }
+  ]
+}

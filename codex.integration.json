@@ -1,0 +1,57 @@
+{
+  "id": "codex-trusted-mode",
+  "name": "Codex Trusted Mode",
+  "version": "0.1.0",
+  "description": "Local hardening first, optional SDE-backed governance second",
+  "configSchema": {
+    "toolPolicyMode": {
+      "type": "string",
+      "enum": ["ALLOWLIST_ONLY", "PDP"],
+      "default": "ALLOWLIST_ONLY"
+    },
+    "allowedTools": {
+      "type": "array",
+      "default": ["functions.shell_command", "functions.update_plan", "functions.view_image"]
+    },
+    "allowedShellCommandPrefixes": {
+      "type": "array",
+      "default": ["Get-ChildItem", "Get-Content", "rg", "git status", "git diff", "git show", "pwd", "ls", "cat"]
+    },
+    "highRiskTools": {
+      "type": "array",
+      "default": ["functions.apply_patch", "functions.shell_command"]
+    },
+    "certificationStatus": {
+      "type": "string",
+      "enum": ["CERTIFIED_ENFORCED", "LOCKDOWN_ONLY", "UNSUPPORTED"],
+      "default": "LOCKDOWN_ONLY"
+    },
+    "failClosed": {
+      "type": "boolean",
+      "default": true
+    },
+    "pdpUrl": {
+      "type": "string",
+      "default": "http://localhost:8001/v1/authorize"
+    },
+    "pdpTimeoutMs": {
+      "type": "number",
+      "default": 5000
+    },
+    "contractId": {
+      "type": "string",
+      "default": "codex-tool-governance"
+    },
+    "contractVersion": {
+      "type": "string",
+      "default": "0.1.0"
+    },
+    "tenantId": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string",
+      "default": "dev"
+    }
+  }
+}

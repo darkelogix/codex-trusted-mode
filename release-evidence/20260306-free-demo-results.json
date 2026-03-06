@@ -1,0 +1,86 @@
+{
+  "results": [
+    {
+      "scenario": "readonly_shell_allow",
+      "event": {
+        "toolName": "functions.shell_command",
+        "command": "Get-Content README.md",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "allow",
+      "reasonCode": "LOCAL_READONLY_SHELL_ALLOW",
+      "source": "local",
+      "trace": {
+        "traceId": "local-functions.shell_command-1772834416030",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "local-hardening",
+        "decision": "allow",
+        "reasonCode": "LOCAL_READONLY_SHELL_ALLOW",
+        "timestampUtc": "2026-03-06T22:00:16.030Z"
+      }
+    },
+    {
+      "scenario": "mutating_shell_block",
+      "event": {
+        "toolName": "functions.shell_command",
+        "command": "git commit -m test",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "deny",
+      "reasonCode": "LOCAL_READONLY_SHELL_BLOCK",
+      "source": "local",
+      "trace": {
+        "traceId": "local-functions.shell_command-1772834416031",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "local-hardening",
+        "decision": "deny",
+        "reasonCode": "LOCAL_READONLY_SHELL_BLOCK",
+        "timestampUtc": "2026-03-06T22:00:16.031Z"
+      }
+    },
+    {
+      "scenario": "apply_patch_block",
+      "event": {
+        "toolName": "functions.apply_patch",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "deny",
+      "reasonCode": "LOCAL_ALLOWLIST_BLOCK",
+      "source": "local",
+      "trace": {
+        "traceId": "local-functions.apply_patch-1772834416031",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "local-hardening",
+        "decision": "deny",
+        "reasonCode": "LOCAL_ALLOWLIST_BLOCK",
+        "timestampUtc": "2026-03-06T22:00:16.031Z"
+      }
+    },
+    {
+      "scenario": "update_plan_allow",
+      "event": {
+        "toolName": "functions.update_plan",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "allow",
+      "reasonCode": "LOCAL_ALLOWLIST_ALLOW",
+      "source": "local",
+      "trace": {
+        "traceId": "local-functions.update_plan-1772834416032",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "local-hardening",
+        "decision": "allow",
+        "reasonCode": "LOCAL_ALLOWLIST_ALLOW",
+        "timestampUtc": "2026-03-06T22:00:16.032Z"
+      }
+    }
+  ]
+}

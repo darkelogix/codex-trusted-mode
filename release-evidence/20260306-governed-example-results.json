@@ -1,0 +1,70 @@
+{
+  "pdpUrl": "http://127.0.0.1:8011/v1/authorize",
+  "results": [
+    {
+      "scenario": "readonly_shell_allow",
+      "event": {
+        "toolName": "functions.shell_command",
+        "command": "Get-Content README.md",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "allow",
+      "reasonCode": "PDP_READONLY_SHELL_ALLOW",
+      "constraints": {},
+      "trace": {
+        "traceId": "trace-codex-shell-allow-001",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "codex-tool-governance-pack.0.1.0",
+        "decision": "allow",
+        "reasonCode": "PDP_READONLY_SHELL_ALLOW",
+        "timestampUtc": "2026-03-06T15:24:39.512Z"
+      },
+      "source": "pdp"
+    },
+    {
+      "scenario": "mutating_shell_deny",
+      "event": {
+        "toolName": "functions.shell_command",
+        "command": "git commit -m test",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "deny",
+      "reasonCode": "PDP_MUTATING_SHELL_DENY",
+      "constraints": {},
+      "trace": {
+        "traceId": "trace-codex-shell-deny-001",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "codex-tool-governance-pack.0.1.0",
+        "decision": "deny",
+        "reasonCode": "PDP_MUTATING_SHELL_DENY",
+        "timestampUtc": "2026-03-06T15:24:39.535Z"
+      },
+      "source": "pdp"
+    },
+    {
+      "scenario": "apply_patch_deny",
+      "event": {
+        "toolName": "functions.apply_patch",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "environment": "dev"
+      },
+      "decision": "deny",
+      "reasonCode": "PDP_PATCH_DENY",
+      "constraints": {},
+      "trace": {
+        "traceId": "trace-codex-patch-deny-001",
+        "contractId": "codex-tool-governance",
+        "contractVersion": "0.1.0",
+        "policyPackVersion": "codex-tool-governance-pack.0.1.0",
+        "decision": "deny",
+        "reasonCode": "PDP_PATCH_DENY",
+        "timestampUtc": "2026-03-06T15:24:39.539Z"
+      },
+      "source": "pdp"
+    }
+  ]
+}

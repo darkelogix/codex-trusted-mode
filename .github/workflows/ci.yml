@@ -1,0 +1,31 @@
+name: codex-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: node --version
+      - run: npm --version
+      - run: node --test
+      - run: node scripts/verify_config_contract.js
+      - run: node scripts/verify_local_hardening.js
+      - run: node scripts/verify_pdp_request_shape.js
+      - run: node scripts/verify_certification_gate.js
+      - run: node scripts/update_compatibility_matrix.js --check
+      - run: npm pack --dry-run --cache .npm-cache

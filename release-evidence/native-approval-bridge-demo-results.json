@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-03-06T17:09:46.788Z",
+  "source": "native_approval_bridge_demo",
+  "results": [
+    {
+      "requestMethod": "item/commandExecution/requestApproval",
+      "event": {
+        "toolName": "functions.shell_command",
+        "command": "Get-Content README.md",
+        "workingDirectory": "C:\\dev\\codex-trusted-mode",
+        "sessionId": "thread-approval-1"
+      },
+      "evaluation": {
+        "decision": "allow",
+        "reasonCode": "LOCAL_READONLY_SHELL_ALLOW",
+        "source": "local",
+        "request": {
+          "runtime": "codex",
+          "runtimeVersion": "",
+          "sessionId": "thread-approval-1",
+          "toolName": "functions.shell_command",
+          "actionType": "execute",
+          "targetPath": "",
+          "command": "Get-Content README.md",
+          "arguments": {},
+          "workingDirectory": "C:\\dev\\codex-trusted-mode",
+          "repoContext": {},
+          "environment": "dev",
+          "tenantId": "",
+          "userRole": ""
+        },
+        "trace": {
+          "traceId": "local-functions.shell_command-1772816986786",
+          "contractId": "codex-tool-governance",
+          "contractVersion": "0.1.0",
+          "policyPackVersion": "local-hardening",
+          "decision": "allow",
+          "reasonCode": "LOCAL_READONLY_SHELL_ALLOW",
+          "timestampUtc": "2026-03-06T17:09:46.786Z"
+        }
+      },
+      "response": {
+        "decision": "accept"
+      }
+    },
+    {
+      "requestMethod": "item/fileChange/requestApproval",
+      "event": {
+        "sessionId": "thread-approval-1",
+        "toolName": "functions.apply_patch",
+        "targetPath": "C:\\dev\\codex-trusted-mode",
+        "arguments": {
+          "grantRoot": "C:\\dev\\codex-trusted-mode"
+        }
+      },
+      "evaluation": {
+        "decision": "deny",
+        "reasonCode": "LOCAL_ALLOWLIST_BLOCK",
+        "source": "local",
+        "request": {
+          "runtime": "codex",
+          "runtimeVersion": "",
+          "sessionId": "thread-approval-1",
+          "toolName": "functions.apply_patch",
+          "actionType": "write",
+          "targetPath": "C:\\dev\\codex-trusted-mode",
+          "command": "",
+          "arguments": {
+            "grantRoot": "C:\\dev\\codex-trusted-mode"
+          },
+          "workingDirectory": "",
+          "repoContext": {},
+          "environment": "dev",
+          "tenantId": "",
+          "userRole": ""
+        },
+        "trace": {
+          "traceId": "local-functions.apply_patch-1772816986788",
+          "contractId": "codex-tool-governance",
+          "contractVersion": "0.1.0",
+          "policyPackVersion": "local-hardening",
+          "decision": "deny",
+          "reasonCode": "LOCAL_ALLOWLIST_BLOCK",
+          "timestampUtc": "2026-03-06T17:09:46.788Z"
+        }
+      },
+      "response": {
+        "decision": "decline"
+      }
+    }
+  ]
+}

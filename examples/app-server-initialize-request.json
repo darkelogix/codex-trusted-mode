@@ -1,0 +1,10 @@
+{
+  "id": "init-1",
+  "method": "initialize",
+  "params": {
+    "clientInfo": {
+      "name": "codex-trusted-mode-demo",
+      "version": "0.1.0"
+    }
+  }
+}

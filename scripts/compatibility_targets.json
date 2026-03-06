@@ -1,0 +1,17 @@
+[
+  {
+    "codex_version": "validated current workspace session",
+    "certification_status": "CERTIFIED_ENFORCED",
+    "notes": "Validated observed current workspace session only."
+  },
+  {
+    "codex_version": "next candidate version",
+    "certification_status": "LOCKDOWN_ONLY",
+    "notes": "Retest before broader enforced claims."
+  },
+  {
+    "codex_version": "latest (rolling)",
+    "certification_status": "UNSUPPORTED",
+    "notes": "Treat as uncertified until explicitly validated."
+  }
+]

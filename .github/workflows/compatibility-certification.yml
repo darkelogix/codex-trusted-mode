@@ -1,0 +1,69 @@
+name: codex-compatibility-certification
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            environment_label: github-ubuntu
+            codex_runtime: github-runner-baseline
+          - os: windows-latest
+            environment_label: github-windows
+            codex_runtime: github-runner-baseline
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm run clean-room-smoke -- -EnvironmentLabel ${{ matrix.environment_label }} -CodexRuntime ${{ matrix.codex_runtime }}
+      - run: |
+          mkdir compat-results
+          $gate = node scripts/verify_certification_gate.js | ConvertFrom-Json
+          $result = [ordered]@{
+            checkedAtUtc = [DateTime]::UtcNow.ToString('o')
+            codex_version = 'validated current workspace session'
+            environment_label = '${{ matrix.environment_label }}'
+            runtime = '${{ matrix.codex_runtime }}'
+            releaseStatus = $gate.releaseStatus
+          }
+          $result | ConvertTo-Json -Depth 20 | Set-Content "compat-results/validated current workspace session.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codex-compat-${{ matrix.environment_label }}
+          path: compat-results/*.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codex-matrix-${{ matrix.environment_label }}
+          path: release-evidence/matrix/runs/*.json
+  aggregate:
+    runs-on: ubuntu-latest
+    needs: smoke
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: codex-compat-*
+          merge-multiple: true
+          path: compat-results
+      - run: node scripts/update_compatibility_matrix.js
+      - run: node scripts/update_compatibility_matrix.js --check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codex-compatibility-matrix
+          path: COMPATIBILITY_MATRIX.md

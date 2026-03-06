@@ -1,0 +1,5 @@
+{"timestampUtc":"2026-03-06T17:34:11.1468500Z","direction":"client-\u003eserver","message":{"method":"initialize","params":{"clientInfo":{"version":"0.1.0","name":"codex-trusted-mode-harness"},"capabilities":{"experimentalApi":true}},"id":"init-1"}}
+{"timestampUtc":"2026-03-06T17:34:11.6421445Z","direction":"server-stderr","message":"WARNING: proceeding, even though we could not update PATH: Access is denied. (os error 5)"}
+{"timestampUtc":"2026-03-06T17:34:11.9325395Z","direction":"server-\u003eclient","message":{"id":"init-1","result":{"userAgent":"codex-trusted-mode-harness/0.111.0 (Windows 10.0.19045; x86_64) unknown (codex-trusted-mode-harness; 0.1.0)"}}}
+{"timestampUtc":"2026-03-06T17:34:11.9481776Z","direction":"client-\u003eserver","message":{"method":"initialized"}}
+{"timestampUtc":"2026-03-06T17:34:11.9481776Z","direction":"client-\u003eserver","message":{"method":"config/read","params":{"cwd":"C:\\dev\\codex-trusted-mode","includeLayers":true},"id":"config-read-1"}}

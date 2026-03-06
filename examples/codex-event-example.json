@@ -1,0 +1,12 @@
+{
+  "runtimeVersion": "unvalidated",
+  "sessionId": "session-001",
+  "toolName": "exec",
+  "command": "git status",
+  "workingDirectory": "/workspace/repo",
+  "repoContext": {
+    "repoName": "demo-repo",
+    "branch": "main"
+  },
+  "environment": "dev"
+}

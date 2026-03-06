@@ -1,0 +1,66 @@
+{
+  "name": "@darkelogix/codex-trusted-mode",
+  "version": "0.1.0",
+  "description": "Codex hardening and optional SDE-backed governance adapter",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "homepage": "https://www.darkelogix.ai/codex/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darkelogix/codex-trusted-mode.git"
+  },
+  "bugs": {
+    "url": "https://www.darkelogix.ai/contact/"
+  },
+  "keywords": [
+    "codex",
+    "trusted-mode",
+    "governance",
+    "policy-enforcement",
+    "security",
+    "darkelogix"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src/",
+    "examples/readonly-shell-event.json",
+    "README.md",
+    "START_HERE.md",
+    "CHANGELOG.md",
+    "FREE_MODE.md",
+    "COMPATIBILITY_MATRIX.md",
+    "LICENSING.md",
+    "codex.integration.json",
+    "codex.user-config.entry.example.json",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "verify-config": "node scripts/verify_config_contract.js",
+    "verify-local-hardening": "node scripts/verify_local_hardening.js",
+    "verify-pdp-request": "node scripts/verify_pdp_request_shape.js",
+    "verify-certification-gate": "node scripts/verify_certification_gate.js",
+    "update-compatibility-matrix": "node scripts/update_compatibility_matrix.js",
+    "verify-compatibility-matrix": "node scripts/update_compatibility_matrix.js --check",
+    "clean-room-smoke": "powershell -ExecutionPolicy Bypass -File scripts/run_clean_room_smoke.ps1",
+    "free-demo": "node scripts/run_free_demo.js",
+    "evaluate-event": "node scripts/evaluate_event.js",
+    "evaluate-app-server-request": "node scripts/evaluate_app_server_request.js",
+    "native-bridge-demo": "node scripts/run_native_bridge_demo.js",
+    "app-server-bridge-smoke": "powershell -ExecutionPolicy Bypass -File scripts/run_app_server_bridge_smoke.ps1",
+    "capture-live-app-server-session": "powershell -ExecutionPolicy Bypass -File scripts/capture_live_app_server_session.ps1",
+    "capture-native-hook-evidence": "node scripts/capture_native_hook_evidence.js",
+    "parse-codex-jsonl-evidence": "node scripts/parse_codex_jsonl_evidence.js",
+    "mock-pdp": "node scripts/mock_pdp.js",
+    "governed-example": "node scripts/run_governed_example.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

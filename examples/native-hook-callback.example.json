@@ -1,0 +1,9 @@
+{
+  "toolName": "functions.shell_command",
+  "decision": "deny",
+  "reasonCode": "PDP_MUTATING_SHELL_DENY",
+  "callbackPayload": {
+    "toolName": "functions.shell_command",
+    "command": "git commit -m test"
+  }
+}

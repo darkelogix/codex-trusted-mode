@@ -1,0 +1,7 @@
+{"type":"thread.started","thread_id":"019cc3fc-7347-75c0-860e-a3fbcbd395de"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"You want the contents of the current directory only. I’m listing `C:\\dev\\codex-trusted-mode` and will stop after that."}}
+{"type":"item.started","item":{"id":"item_1","type":"command_execution","command":"\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'","aggregated_output":"","exit_code":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_1","type":"command_execution","command":"\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'","aggregated_output":"`\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'` rejected: blocked by policy","exit_code":-1,"status":"failed"}}
+{"type":"item.completed","item":{"id":"item_2","type":"agent_message","text":"I couldn’t run the directory listing because shell execution is blocked in this session by policy, so I can’t reliably enumerate the files from `C:\\dev\\codex-trusted-mode`."}}
+{"type":"turn.completed","usage":{"input_tokens":16182,"cached_input_tokens":13056,"output_tokens":243}}

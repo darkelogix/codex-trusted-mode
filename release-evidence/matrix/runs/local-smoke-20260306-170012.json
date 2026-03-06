@@ -1,0 +1,53 @@
+{
+    "capturedAtUtc":  "2026-03-06T22:00:16.0617644Z",
+    "runId":  "local-smoke-20260306-170012",
+    "environmentLabel":  "local-smoke",
+    "codexRuntime":  "current",
+    "repoRoot":  "C:\\dev\\codex-trusted-mode",
+    "isolatedTempRoot":  "C:\\dev\\codex-trusted-mode\\.clean-room\\local-smoke-20260306-170012",
+    "overallStatus":  "passed",
+    "steps":  [
+                  {
+                      "name":  "verify_config_contract",
+                      "status":  "passed",
+                      "optional":  false,
+                      "startedAtUtc":  "2026-03-06T22:00:12.2171901Z",
+                      "completedAtUtc":  "2026-03-06T22:00:12.5514559Z"
+                  },
+                  {
+                      "name":  "verify_local_hardening",
+                      "status":  "passed",
+                      "optional":  false,
+                      "startedAtUtc":  "2026-03-06T22:00:12.5730958Z",
+                      "completedAtUtc":  "2026-03-06T22:00:12.7182067Z"
+                  },
+                  {
+                      "name":  "verify_pdp_request_shape",
+                      "status":  "passed",
+                      "optional":  false,
+                      "startedAtUtc":  "2026-03-06T22:00:12.7182067Z",
+                      "completedAtUtc":  "2026-03-06T22:00:12.8533805Z"
+                  },
+                  {
+                      "name":  "verify_certification_gate",
+                      "status":  "passed",
+                      "optional":  false,
+                      "startedAtUtc":  "2026-03-06T22:00:12.8533805Z",
+                      "completedAtUtc":  "2026-03-06T22:00:12.9907122Z"
+                  },
+                  {
+                      "name":  "package_dry_run",
+                      "status":  "passed",
+                      "optional":  false,
+                      "startedAtUtc":  "2026-03-06T22:00:12.9907122Z",
+                      "completedAtUtc":  "2026-03-06T22:00:15.8771536Z"
+                  },
+                  {
+                      "name":  "free_demo",
+                      "status":  "passed",
+                      "optional":  false,
+                      "startedAtUtc":  "2026-03-06T22:00:15.8781589Z",
+                      "completedAtUtc":  "2026-03-06T22:00:16.0459578Z"
+                  }
+              ]
+}

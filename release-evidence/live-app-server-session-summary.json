@@ -1,0 +1,8 @@
+{
+    "capturedAtUtc":  "2026-03-06T17:34:56.4586077Z",
+    "status":  "timeout",
+    "approvalHandled":  false,
+    "commandDecision":  null,
+    "transcriptPath":  "release-evidence/live-app-server-session.jsonl",
+    "reason":  "No live approval callback captured before timeout."
+}

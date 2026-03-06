@@ -1,0 +1,12 @@
+{
+  "id": "approval-1",
+  "method": "item/commandExecution/requestApproval",
+  "params": {
+    "itemId": "item-approval-1",
+    "threadId": "thread-approval-1",
+    "turnId": "turn-approval-1",
+    "command": "Get-Content README.md",
+    "cwd": "C:\\dev\\codex-trusted-mode",
+    "reason": "Readonly file inspection"
+  }
+}

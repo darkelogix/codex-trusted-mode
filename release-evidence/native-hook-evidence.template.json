@@ -1,0 +1,15 @@
+{
+  "capturedAtUtc": "2026-03-06T00:00:00Z",
+  "runtime": "codex",
+  "status": "template_only",
+  "notes": [
+    "Replace this template with real native hook or callback evidence before making CERTIFIED_ENFORCED claims.",
+    "Capture the actual callback shape, observed tool name, and enforcement result."
+  ],
+  "observed": {
+    "toolName": "",
+    "callbackShape": {},
+    "decision": "",
+    "reasonCode": ""
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "toolPolicyMode": "ALLOWLIST_ONLY",
+  "allowedTools": ["functions.shell_command", "functions.update_plan", "functions.view_image"],
+  "allowedShellCommandPrefixes": ["Get-ChildItem", "Get-Content", "rg", "git status", "git diff", "git show", "pwd", "ls", "cat"],
+  "highRiskTools": ["functions.apply_patch", "functions.shell_command"],
+  "certificationStatus": "LOCKDOWN_ONLY",
+  "failClosed": true,
+  "pdpUrl": "http://localhost:8001/v1/authorize",
+  "pdpTimeoutMs": 5000,
+  "contractId": "codex-tool-governance",
+  "contractVersion": "0.1.0",
+  "environment": "dev"
+}

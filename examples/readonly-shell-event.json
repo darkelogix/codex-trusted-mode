@@ -1,0 +1,6 @@
+{
+  "toolName": "functions.shell_command",
+  "command": "Get-Content README.md",
+  "workingDirectory": "C:\\dev\\codex-trusted-mode",
+  "environment": "dev"
+}

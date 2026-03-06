@@ -1,0 +1,16 @@
+{
+  "observedAtUtc": "2026-03-06T00:00:00Z",
+  "runtime": "codex",
+  "toolIds": [
+    "functions.shell_command",
+    "functions.apply_patch",
+    "functions.update_plan",
+    "functions.view_image"
+  ],
+  "planModeToolIds": [
+    "functions.request_user_input"
+  ],
+  "wrapperToolIds": [
+    "multi_tool_use.parallel"
+  ]
+}

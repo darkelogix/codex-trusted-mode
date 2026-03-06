@@ -1,0 +1,23 @@
+{
+  "capturedAtUtc": "2026-03-06T16:33:25.822Z",
+  "runtime": "codex",
+  "status": "runtime_stream_captured",
+  "source": "real_runtime",
+  "notes": [
+    "Captured from codex exec --json output.",
+    "This proves native runtime event shape, but does not by itself prove adapter-mediated enforcement."
+  ],
+  "observed": {
+    "toolName": "command_execution",
+    "callbackShape": {
+      "id": "item_1",
+      "type": "command_execution",
+      "command": "\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'",
+      "aggregated_output": "`\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'` rejected: blocked by policy",
+      "exit_code": -1,
+      "status": "failed"
+    },
+    "decision": "deny_like",
+    "reasonCode": "RUNTIME_POLICY_BLOCK"
+  }
+}
