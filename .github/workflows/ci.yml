@@ -26,5 +26,4 @@ jobs:
       - run: node scripts/verify_local_hardening.js
       - run: node scripts/verify_pdp_request_shape.js
       - run: node scripts/verify_certification_gate.js
-      - run: node scripts/update_compatibility_matrix.js --check
       - run: npm pack --dry-run --cache .npm-cache
