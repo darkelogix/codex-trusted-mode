@@ -26,7 +26,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
       - run: npm run clean-room-smoke -- -EnvironmentLabel ${{ matrix.environment_label }} -CodexRuntime ${{ matrix.codex_runtime }}
       - run: |
           mkdir compat-results
