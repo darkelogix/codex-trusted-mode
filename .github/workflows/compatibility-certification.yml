@@ -54,7 +54,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
       - uses: actions/download-artifact@v4
         with:
           pattern: codex-compat-*

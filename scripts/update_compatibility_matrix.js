@@ -4,6 +4,10 @@ import { fileURLToPath } from 'node:url';
 
 const CHECK_ONLY = process.argv.includes('--check');
 
+function normalizeLineEndings(value) {
+  return value.replace(/\r\n/g, '\n');
+}
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -71,7 +75,7 @@ const current = fs.readFileSync(matrixPath, 'utf8');
 const next = replaceMatrixTable(current, rows);
 
 if (CHECK_ONLY) {
-  if (current !== next) {
+  if (normalizeLineEndings(current) !== normalizeLineEndings(next)) {
     console.error('COMPATIBILITY_MATRIX.md is out of date. Run: node scripts/update_compatibility_matrix.js');
     process.exit(1);
   }
