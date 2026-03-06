@@ -1,0 +1,4 @@
+.clean-room/
+.npm-cache/
+gh-artifacts/
+*.tgz

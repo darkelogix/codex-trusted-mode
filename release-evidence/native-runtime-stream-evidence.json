@@ -1,5 +1,5 @@
 {
-  "capturedAtUtc": "2026-03-06T16:33:25.822Z",
+  "capturedAtUtc": "2026-03-06T23:20:11.306Z",
   "runtime": "codex",
   "status": "runtime_stream_captured",
   "source": "real_runtime",
@@ -12,12 +12,12 @@
     "callbackShape": {
       "id": "item_1",
       "type": "command_execution",
-      "command": "\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'",
-      "aggregated_output": "`\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-ChildItem -Force | Select-Object Mode,Length,LastWriteTime,Name'` rejected: blocked by policy",
-      "exit_code": -1,
-      "status": "failed"
+      "command": "/bin/bash -lc 'ls -1'",
+      "aggregated_output": "ARCHITECTURE.md\nCHANGELOG.md\nCOMPATIBILITY_MATRIX.md\nDECISION_CONTRACT.md\nFREE_MODE.md\nLICENSE\nLICENSING.md\nNATIVE_HOOK_WORKFLOW.md\nOBSERVED_TOOL_SURFACE.md\nPRODUCT_DEFINITION.md\nPUBLISHING.md\nREADME.md\nRELEASE_EVIDENCE_TEMPLATE.md\nSTART_HERE.md\napp-server-schema\napp-server-ts\ncodex.integration.json\ncodex.user-config.entry.example.json\nexamples\ngh-artifacts\npackage-lock.json\npackage.json\npacks\nrelease-evidence\nscripts\nsrc\ntests\n",
+      "exit_code": 0,
+      "status": "completed"
     },
-    "decision": "deny_like",
-    "reasonCode": "RUNTIME_POLICY_BLOCK"
+    "decision": "allow_like",
+    "reasonCode": "RUNTIME_EXECUTION_ALLOWED"
   }
 }

@@ -64,6 +64,13 @@ There is now a live harness for probing the native app-server path:
    - `release-evidence\live-app-server-session.jsonl`
    - `release-evidence\live-app-server-session-summary.json`
 
+Linux-friendly equivalent:
+
+1. `npm run capture-live-app-server-session:node`
+2. Review:
+   - `release-evidence/live-app-server-session.jsonl`
+   - `release-evidence/live-app-server-session-summary.json`
+
 Current state in this environment:
 - `initialize` succeeds
 - follow-on requests are accepted on the wire
@@ -75,6 +82,11 @@ If you do not yet have a direct adapter callback payload, capture the Codex nati
 
 1. Run `powershell -ExecutionPolicy Bypass -File scripts\capture_codex_jsonl.ps1`
 2. Parse it with `node scripts\parse_codex_jsonl_evidence.js --input release-evidence\codex-exec-capture.jsonl`
+
+On Ubuntu, the simplest direct stream capture is:
+
+1. `codex exec --json "List the files in the current directory and stop." > release-evidence/codex-exec-capture.jsonl`
+2. `node scripts/parse_codex_jsonl_evidence.js --input release-evidence/codex-exec-capture.jsonl --source real_runtime`
 
 This proves the live Codex event shape. It does not, by itself, unlock `CERTIFIED_ENFORCED_READY`.
 

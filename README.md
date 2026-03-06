@@ -91,6 +91,12 @@ node scripts/verify_certification_gate.js
 node --test
 ```
 
+On Linux without PowerShell, run the clean-room baseline with:
+
+```bash
+npm run clean-room-smoke:linux -- ubuntu-vm-first-pass codex-current
+```
+
 5. Run the standalone free demo:
 
 ```bash
@@ -132,6 +138,12 @@ node scripts/run_governed_example.js
 
 ```bash
 powershell -ExecutionPolicy Bypass -File scripts/capture_live_app_server_session.ps1
+```
+
+On Linux, use the Node harness directly:
+
+```bash
+npm run capture-live-app-server-session:node
 ```
 
 Current harness status:

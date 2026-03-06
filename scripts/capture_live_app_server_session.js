@@ -7,12 +7,21 @@ import { evaluateAppServerApprovalRequest } from '../src/index.js';
 const repoRoot = process.cwd();
 const outputPath = path.join(repoRoot, 'release-evidence', 'live-app-server-session.jsonl');
 const evidencePath = path.join(repoRoot, 'release-evidence', 'live-app-server-session-summary.json');
+const rawCallbackPath = path.join(repoRoot, 'release-evidence', 'native-hook-callback-raw.json');
+const proofTargetPath = path.join(repoRoot, 'release-evidence', 'native-approval-proof.tmp');
+
+for (const stalePath of [outputPath, evidencePath, rawCallbackPath, proofTargetPath]) {
+  try {
+    fs.rmSync(stalePath, { force: true });
+  } catch {}
+}
 
 const transcript = [];
 let resolved = false;
 let nextId = 1;
 let approvalHandled = false;
 let commandDecision = null;
+let threadId = null;
 
 function record(direction, message) {
   transcript.push({
@@ -55,12 +64,30 @@ function buildThreadStart() {
         type: 'readOnly',
         networkAccess: false,
       },
+    },
+  };
+}
+
+function buildTurnStart(threadIdValue) {
+  const relativeProofTarget = path.relative(repoRoot, proofTargetPath).replaceAll('\\', '/');
+  return {
+    id: `turn-start-${nextId++}`,
+    method: 'turn/start',
+    params: {
+      threadId: threadIdValue,
       input: [
         {
           type: 'text',
-          text: 'List the files in the current directory and then stop.',
+          text: `Append the line TEST_BRIDGE_CAPTURE to ${relativeProofTarget} and then stop.`,
+          text_elements: [],
         },
       ],
+      cwd: repoRoot,
+      approvalPolicy: 'untrusted',
+      sandboxPolicy: {
+        type: 'readOnly',
+        networkAccess: false,
+      },
     },
   };
 }
@@ -127,7 +154,14 @@ rl.on('line', async (line) => {
     return;
   }
 
+  if (typeof message.id !== 'undefined' && String(message.id).startsWith('thread-start-') && message.result?.thread?.id) {
+    threadId = message.result.thread.id;
+    send(child, buildTurnStart(threadId));
+    return;
+  }
+
   if (message.method === 'item/commandExecution/requestApproval' || message.method === 'item/fileChange/requestApproval') {
+    fs.writeFileSync(rawCallbackPath, JSON.stringify(message, null, 2));
     const result = await evaluateAppServerApprovalRequest(message);
     approvalHandled = true;
     commandDecision = result.response?.decision || null;
@@ -142,6 +176,7 @@ rl.on('line', async (line) => {
     clearTimeout(timeout);
     finalize(child, approvalHandled ? 'captured' : 'completed_without_approval', {
       finalNotification: message.method,
+      threadId,
     });
   }
 });

@@ -25,6 +25,31 @@ function main() {
 
   const raw = JSON.parse(fs.readFileSync(path.resolve(args.input), 'utf8'));
   const source = args.source === 'real_runtime' ? 'real_runtime' : 'example';
+  const summaryPath = path.join(evidenceDir, 'live-app-server-session-summary.json');
+  const liveSummary = fs.existsSync(summaryPath)
+    ? JSON.parse(fs.readFileSync(summaryPath, 'utf8'))
+    : null;
+
+  const inferredToolName =
+    raw.toolName
+    || raw.tool_name
+    || raw.method
+    || raw.type
+    || raw.params?.toolName
+    || raw.params?.tool_name
+    || '';
+
+  const inferredDecision =
+    raw.decision
+    || raw.response?.decision
+    || liveSummary?.commandDecision
+    || '';
+
+  const inferredReasonCode =
+    raw.reasonCode
+    || raw.reason_code
+    || (source === 'real_runtime' ? 'LIVE_NATIVE_APPROVAL_CAPTURED' : 'EXAMPLE_NATIVE_APPROVAL_CAPTURED');
+
   const normalized = {
     capturedAtUtc: new Date().toISOString(),
     runtime: 'codex',
@@ -37,10 +62,10 @@ function main() {
       'Review for sensitive content before distribution outside the engineering context.',
     ],
     observed: {
-      toolName: raw.toolName || raw.tool_name || '',
+      toolName: inferredToolName,
       callbackShape: raw,
-      decision: raw.decision || '',
-      reasonCode: raw.reasonCode || raw.reason_code || '',
+      decision: inferredDecision,
+      reasonCode: inferredReasonCode,
     },
   };
 

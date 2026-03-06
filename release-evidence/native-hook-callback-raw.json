@@ -1,36 +1,35 @@
 {
-  "toolName": "item/commandExecution/requestApproval",
-  "decision": "accept",
-  "reasonCode": "LIVE_NATIVE_APPROVAL_CAPTURED",
-  "callbackPayload": {
-    "method": "item/commandExecution/requestApproval",
-    "id": 0,
-    "params": {
-      "threadId": "019cc443-c4d3-78f0-ba51-c5e782793f5f",
-      "turnId": "019cc443-c4ff-7e42-95a1-afb72f6e30f2",
-      "itemId": "call_JtLvcRmny9E7Lq9ivf6VgPA2",
-      "reason": "Do you want to allow appending the requested line to release-evidence/native-approval-proof.tmp?",
-      "command": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -Command \"Add-Content -Path 'release-evidence/native-approval-proof.tmp' -Value 'TEST_BRIDGE_CAPTURE'\"",
-      "cwd": "C:\\dev\\codex-trusted-mode",
-      "commandActions": [
-        {
-          "type": "unknown",
-          "command": "Add-Content -Path 'release-evidence/native-approval-proof.tmp' -Value 'TEST_BRIDGE_CAPTURE'"
+  "method": "item/commandExecution/requestApproval",
+  "id": 0,
+  "params": {
+    "threadId": "019cc577-c1cc-7fb3-a960-52b1d98377a9",
+    "turnId": "019cc577-c1d7-7831-a5da-1151886d9f7c",
+    "itemId": "call_BH27NP7fje2J1ZtTHouq0GcW",
+    "command": "/bin/bash -lc \"printf '%s\n' 'TEST_BRIDGE_CAPTURE' >> release-evidence/native-approval-proof.tmp\"",
+    "cwd": "/mnt/c/dev/codex-trusted-mode",
+    "commandActions": [
+      {
+        "type": "unknown",
+        "command": "printf '%s\n' 'TEST_BRIDGE_CAPTURE' >> release-evidence/native-approval-proof.tmp"
+      }
+    ],
+    "proposedExecpolicyAmendment": [
+      "/bin/bash",
+      "-lc",
+      "printf '%s\n' 'TEST_BRIDGE_CAPTURE' >> release-evidence/native-approval-proof.tmp"
+    ],
+    "availableDecisions": [
+      "accept",
+      {
+        "acceptWithExecpolicyAmendment": {
+          "execpolicy_amendment": [
+            "/bin/bash",
+            "-lc",
+            "printf '%s\n' 'TEST_BRIDGE_CAPTURE' >> release-evidence/native-approval-proof.tmp"
+          ]
         }
-      ],
-      "availableDecisions": [
-        "accept",
-        {
-          "acceptWithExecpolicyAmendment": {
-            "execpolicy_amendment": [
-              "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-              "-Command",
-              "Add-Content -Path 'release-evidence/native-approval-proof.tmp' -Value 'TEST_BRIDGE_CAPTURE'"
-            ]
-          }
-        },
-        "cancel"
-      ]
-    }
+      },
+      "cancel"
+    ]
   }
 }
