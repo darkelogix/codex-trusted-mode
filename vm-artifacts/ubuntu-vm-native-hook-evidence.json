@@ -1,0 +1,50 @@
+{
+  "capturedAtUtc": "2026-03-07T14:31:06.727Z",
+  "runtime": "codex",
+  "status": "captured",
+  "source": "real_runtime",
+  "notes": [
+    "Captured from a real native hook or callback path.",
+    "Review for sensitive content before distribution outside the engineering context."
+  ],
+  "observed": {
+    "toolName": "item/commandExecution/requestApproval",
+    "callbackShape": {
+      "method": "item/commandExecution/requestApproval",
+      "id": 0,
+      "params": {
+        "threadId": "019cc8b5-6003-7ed0-8415-680f07024344",
+        "turnId": "019cc8b5-601c-79a2-9e79-a74a6b9956dc",
+        "itemId": "call_kakOKcpaS6lmWgIpE1JLOrrZ",
+        "command": "/bin/bash -lc \"printf 'TEST_BRIDGE_CAPTURE\n' >> release-evidence/native-approval-proof.tmp\"",
+        "cwd": "/home/tmdarke/codex-trusted-mode",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "printf 'TEST_BRIDGE_CAPTURE\n' >> release-evidence/native-approval-proof.tmp"
+          }
+        ],
+        "proposedExecpolicyAmendment": [
+          "/bin/bash",
+          "-lc",
+          "printf 'TEST_BRIDGE_CAPTURE\n' >> release-evidence/native-approval-proof.tmp"
+        ],
+        "availableDecisions": [
+          "accept",
+          {
+            "acceptWithExecpolicyAmendment": {
+              "execpolicy_amendment": [
+                "/bin/bash",
+                "-lc",
+                "printf 'TEST_BRIDGE_CAPTURE\n' >> release-evidence/native-approval-proof.tmp"
+              ]
+            }
+          },
+          "cancel"
+        ]
+      }
+    },
+    "decision": "decline",
+    "reasonCode": "LIVE_NATIVE_APPROVAL_CAPTURED"
+  }
+}

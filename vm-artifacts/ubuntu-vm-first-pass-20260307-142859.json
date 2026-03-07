@@ -1,0 +1,24 @@
+{
+  "capturedAtUtc": "2026-03-07T14:29:02Z",
+  "runId": "ubuntu-vm-first-pass-20260307-142859",
+  "environmentLabel": "ubuntu-vm-first-pass",
+  "codexRuntime": "codex-ubuntu-vm",
+  "repoRoot": "/home/tmdarke/codex-trusted-mode",
+  "isolatedTempRoot": "/home/tmdarke/codex-trusted-mode/.clean-room/ubuntu-vm-first-pass-20260307-142859",
+  "overallStatus": "passed",
+  "steps": [
+    {"name":"node_test","status":"passed","optional":true,"startedAtUtc":"2026-03-07T14:28:59Z","completedAtUtc":"2026-03-07T14:29:00Z"}
+,
+    {"name":"verify_config_contract","status":"passed","optional":false,"startedAtUtc":"2026-03-07T14:29:00Z","completedAtUtc":"2026-03-07T14:29:00Z"}
+,
+    {"name":"verify_local_hardening","status":"passed","optional":false,"startedAtUtc":"2026-03-07T14:29:00Z","completedAtUtc":"2026-03-07T14:29:00Z"}
+,
+    {"name":"verify_pdp_request_shape","status":"passed","optional":false,"startedAtUtc":"2026-03-07T14:29:00Z","completedAtUtc":"2026-03-07T14:29:01Z"}
+,
+    {"name":"verify_certification_gate","status":"passed","optional":false,"startedAtUtc":"2026-03-07T14:29:01Z","completedAtUtc":"2026-03-07T14:29:01Z"}
+,
+    {"name":"package_dry_run","status":"passed","optional":false,"startedAtUtc":"2026-03-07T14:29:01Z","completedAtUtc":"2026-03-07T14:29:02Z"}
+,
+    {"name":"free_demo","status":"passed","optional":false,"startedAtUtc":"2026-03-07T14:29:02Z","completedAtUtc":"2026-03-07T14:29:02Z"}
+  ]
+}
