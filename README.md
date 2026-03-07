@@ -97,6 +97,12 @@ On Linux without PowerShell, run the clean-room baseline with:
 npm run clean-room-smoke:linux -- ubuntu-vm-first-pass codex-current
 ```
 
+For a full fresh-Ubuntu first pass, use the one-shot bootstrap:
+
+```bash
+npm run ubuntu-first-pass
+```
+
 5. Run the standalone free demo:
 
 ```bash

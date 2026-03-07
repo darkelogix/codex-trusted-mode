@@ -50,6 +50,7 @@
     "verify-compatibility-matrix": "node scripts/update_compatibility_matrix.js --check",
     "clean-room-smoke": "pwsh -File scripts/run_clean_room_smoke.ps1",
     "clean-room-smoke:linux": "bash ./scripts/run_clean_room_smoke.sh",
+    "ubuntu-first-pass": "bash ./scripts/run_ubuntu_first_pass.sh",
     "free-demo": "node scripts/run_free_demo.js",
     "evaluate-event": "node scripts/evaluate_event.js",
     "evaluate-app-server-request": "node scripts/evaluate_app_server_request.js",
