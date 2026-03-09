@@ -12,13 +12,13 @@
       "reasonCode": "LOCAL_READONLY_SHELL_ALLOW",
       "source": "local",
       "trace": {
-        "traceId": "local-functions.shell_command-1772834416030",
+        "traceId": "local-functions.shell_command-1772838954217",
         "contractId": "codex-tool-governance",
         "contractVersion": "0.1.0",
         "policyPackVersion": "local-hardening",
         "decision": "allow",
         "reasonCode": "LOCAL_READONLY_SHELL_ALLOW",
-        "timestampUtc": "2026-03-06T22:00:16.030Z"
+        "timestampUtc": "2026-03-06T23:15:54.217Z"
       }
     },
     {
@@ -33,13 +33,13 @@
       "reasonCode": "LOCAL_READONLY_SHELL_BLOCK",
       "source": "local",
       "trace": {
-        "traceId": "local-functions.shell_command-1772834416031",
+        "traceId": "local-functions.shell_command-1772838954217",
         "contractId": "codex-tool-governance",
         "contractVersion": "0.1.0",
         "policyPackVersion": "local-hardening",
         "decision": "deny",
         "reasonCode": "LOCAL_READONLY_SHELL_BLOCK",
-        "timestampUtc": "2026-03-06T22:00:16.031Z"
+        "timestampUtc": "2026-03-06T23:15:54.217Z"
       }
     },
     {
@@ -53,13 +53,13 @@
       "reasonCode": "LOCAL_ALLOWLIST_BLOCK",
       "source": "local",
       "trace": {
-        "traceId": "local-functions.apply_patch-1772834416031",
+        "traceId": "local-functions.apply_patch-1772838954217",
         "contractId": "codex-tool-governance",
         "contractVersion": "0.1.0",
         "policyPackVersion": "local-hardening",
         "decision": "deny",
         "reasonCode": "LOCAL_ALLOWLIST_BLOCK",
-        "timestampUtc": "2026-03-06T22:00:16.031Z"
+        "timestampUtc": "2026-03-06T23:15:54.217Z"
       }
     },
     {
@@ -73,13 +73,13 @@
       "reasonCode": "LOCAL_ALLOWLIST_ALLOW",
       "source": "local",
       "trace": {
-        "traceId": "local-functions.update_plan-1772834416032",
+        "traceId": "local-functions.update_plan-1772838954218",
         "contractId": "codex-tool-governance",
         "contractVersion": "0.1.0",
         "policyPackVersion": "local-hardening",
         "decision": "allow",
         "reasonCode": "LOCAL_ALLOWLIST_ALLOW",
-        "timestampUtc": "2026-03-06T22:00:16.032Z"
+        "timestampUtc": "2026-03-06T23:15:54.218Z"
       }
     }
   ]
