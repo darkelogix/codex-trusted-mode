@@ -34,3 +34,4 @@ The certified transition is based on a real Codex app-server callback captured f
 - A prior home-directory run resolved the wrong working directory because the debug helper inherited the shell cwd.
 - The final certified capture was rerun from `C:\dev\codex-trusted-mode` so the native callback targeted the repo path.
 - The disposable proof file created during the live callback capture was removed after evidence was recorded.
+> Publication note: keep public evidence bundles sanitized. Remove environment-specific paths, session identifiers, customer/repo names, diffs, tokens, and other operationally sensitive data before external distribution.
