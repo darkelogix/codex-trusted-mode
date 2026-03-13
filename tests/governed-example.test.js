@@ -11,8 +11,8 @@ function startMockServer() {
     });
     req.on('end', () => {
       const parsed = JSON.parse(body || '{}');
-      const toolName = parsed.request?.toolName;
-      const command = String(parsed.request?.command || '').toLowerCase();
+      const toolName = parsed.inputs?.request?.toolName;
+      const command = String(parsed.inputs?.request?.command || '').toLowerCase();
       let response;
       if (toolName === 'functions.apply_patch') {
         response = { decision: 'deny', reasonCode: 'PDP_PATCH_DENY', trace: { traceId: 't1' } };

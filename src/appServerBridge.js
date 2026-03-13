@@ -33,6 +33,27 @@ function buildFileChangeEvent(params = {}, method = '') {
   };
 }
 
+function buildUnsupportedResponse(request = {}) {
+  const method = String(request.method || '');
+
+  switch (method) {
+    case 'item/tool/requestUserInput':
+      return { answers: {} };
+    case 'item/tool/call':
+      return {
+        success: false,
+        contentItems: [
+          {
+            type: 'inputText',
+            text: `Unsupported app-server request method: ${method}`,
+          },
+        ],
+      };
+    default:
+      return null;
+  }
+}
+
 function mapRequestToEvent(request = {}) {
   const method = String(request.method || '');
   const params = request.params || {};
@@ -45,27 +66,27 @@ function mapRequestToEvent(request = {}) {
     case 'applyPatchApproval':
       return buildFileChangeEvent(params, method);
     default:
-      throw new Error(`Unsupported app-server approval method: ${method}`);
+      return null;
   }
 }
 
 function mapDecisionForCommand(decision) {
-  if (decision === 'allow') return 'accept';
+  if (decision === 'allow' || decision === 'constrain') return 'accept';
   return 'decline';
 }
 
 function mapDecisionForFileChange(decision) {
-  if (decision === 'allow') return 'accept';
+  if (decision === 'allow' || decision === 'constrain') return 'accept';
   return 'decline';
 }
 
 function mapDecisionForLegacyExec(decision) {
-  if (decision === 'allow') return 'approved';
+  if (decision === 'allow' || decision === 'constrain') return 'approved';
   return 'denied';
 }
 
 function mapDecisionForLegacyPatch(decision) {
-  if (decision === 'allow') return 'approved';
+  if (decision === 'allow' || decision === 'constrain') return 'approved';
   return 'denied';
 }
 
@@ -89,6 +110,19 @@ export function mapEvaluationToApprovalResponse(request = {}, evaluation = {}) {
 
 export async function evaluateAppServerApprovalRequest(request = {}, overrides = {}) {
   const event = mapRequestToEvent(request);
+  if (!event) {
+    return {
+      requestMethod: String(request.method || ''),
+      event: null,
+      evaluation: {
+        decision: 'unsupported',
+        reasonCode: 'UNSUPPORTED_APP_SERVER_METHOD',
+        source: 'bridge',
+      },
+      response: buildUnsupportedResponse(request),
+    };
+  }
+
   const evaluation = await evaluateCodexEvent(event, overrides);
   const response = mapEvaluationToApprovalResponse(request, evaluation);
 

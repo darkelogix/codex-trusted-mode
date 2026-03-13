@@ -46,9 +46,14 @@ export function buildConfig(overrides = {}) {
     failClosed: overrides.failClosed !== false,
     pdpUrl: typeof overrides.pdpUrl === 'string' ? overrides.pdpUrl : 'http://localhost:8001/v1/authorize',
     pdpTimeoutMs: Number.isFinite(overrides.pdpTimeoutMs) ? overrides.pdpTimeoutMs : 5000,
+    decisionSku:
+      typeof overrides.decisionSku === 'string' ? overrides.decisionSku : 'codex.trusted_mode.authorize.v1',
+    policyVariant:
+      typeof overrides.policyVariant === 'string' ? overrides.policyVariant : 'codex-guard.v0.1.0',
     contractId: typeof overrides.contractId === 'string' ? overrides.contractId : 'codex-tool-governance',
     contractVersion: typeof overrides.contractVersion === 'string' ? overrides.contractVersion : '0.1.0',
     tenantId: typeof overrides.tenantId === 'string' ? overrides.tenantId : '',
+    gatewayId: typeof overrides.gatewayId === 'string' ? overrides.gatewayId : '',
     environment: typeof overrides.environment === 'string' ? overrides.environment : 'dev',
   };
 }

@@ -65,9 +65,13 @@ export async function evaluateCodexEvent(event, overrides = {}) {
   try {
     const pdp = await authorizeWithPdp(config, request);
     const decision = pdp.body?.decision || 'deny';
+    const reasonCode =
+      pdp.body?.reasonCode ||
+      pdp.body?.deny_code ||
+      (decision === 'allow' ? 'PDP_ALLOW' : decision === 'constrain' ? 'PDP_CONSTRAIN' : 'PDP_DENY');
     return {
       decision,
-      reasonCode: pdp.body?.reasonCode || (decision === 'constrain' ? 'PDP_CONSTRAIN' : 'PDP_DENY'),
+      reasonCode,
       source: 'pdp',
       request,
       constraints: pdp.body?.constraints || {},

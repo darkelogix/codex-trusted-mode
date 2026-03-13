@@ -97,7 +97,7 @@ const server = http.createServer((req, res) => {
   req.on('end', () => {
     try {
       const parsed = JSON.parse(body || '{}');
-      const result = decide(parsed.request || {});
+      const result = decide(parsed.inputs?.request || {});
       json(res, 200, result);
     } catch (error) {
       json(res, 400, { error: 'invalid_json', message: String(error.message || error) });

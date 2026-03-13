@@ -38,6 +38,14 @@
       "type": "number",
       "default": 5000
     },
+    "decisionSku": {
+      "type": "string",
+      "default": "codex.trusted_mode.authorize.v1"
+    },
+    "policyVariant": {
+      "type": "string",
+      "default": "codex-guard.v0.1.0"
+    },
     "contractId": {
       "type": "string",
       "default": "codex-tool-governance"
