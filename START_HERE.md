@@ -1,10 +1,24 @@
 # Start Here
 
+This repo supports two distinct customer paths:
+
+- npm-installed adapter with useful standalone hardening
+- separately licensed SDE-backed governed mode obtained through the Darkelogix customer console
+
 ## Objective
 
 Start with a useful free Codex hardening posture. Add SDE only when you need governed authorization, evidence, and certification.
 
 ## Free Standalone Path
+
+Install the public adapter with:
+
+```bash
+npm install @darkelogix/codex-trusted-mode
+```
+
+You can stay on this path indefinitely if you only need local hardening.
+
 
 1. Keep `toolPolicyMode` set to `ALLOWLIST_ONLY`
 2. Allow only:
@@ -24,6 +38,9 @@ node scripts/run_free_demo.js
 ```
 
 ## Paid Governed Path
+
+Use this path only after you have licensed access to SDE through Darkelogix. The public npm package is the adapter layer; the customer console is the supported way to obtain the governed runtime, deployment materials, and instructions.
+
 
 Switch `toolPolicyMode` to `PDP` only after:
 - the Codex event surface has been validated in your environment

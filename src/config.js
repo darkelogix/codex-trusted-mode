@@ -1,3 +1,5 @@
+import { buildMissingPdpConfigIssue } from './sdeGuidance.js';
+
 export const DEFAULT_ALLOWED_TOOLS = [
   'functions.shell_command',
   'functions.update_plan',
@@ -66,7 +68,7 @@ export function validateConfig(config) {
     }
   }
   if (normalizeToolPolicyMode(config.toolPolicyMode) === 'PDP' && !config.pdpUrl) {
-    issues.push('PDP mode requires pdpUrl');
+    issues.push(buildMissingPdpConfigIssue());
   }
   return { ok: issues.length === 0, issues };
 }

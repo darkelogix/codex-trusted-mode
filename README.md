@@ -4,11 +4,19 @@ Codex Trusted Mode is a Codex-to-SDE integration layer for governed tool executi
 
 ## npm Package
 
-The MIT adapter package is prepared for npm publication as:
+Install the public MIT adapter package with:
 
 ```bash
 npm install @darkelogix/codex-trusted-mode
 ```
+
+## What `npm install` gives you
+
+`npm install @darkelogix/codex-trusted-mode` gives you the MIT adapter layer, local hardening path, and mock-PDP examples only. It does not grant access to the proprietary SDE runtime, enterprise evidence packs, or commercial governed entitlements.
+
+## Need governed mode?
+
+If you want SDE-backed governed mode, obtain your licensed SDE runtime and deployment instructions from the Darkelogix customer console. The public npm package is the adapter install surface; the customer console is the governed-runtime delivery surface.
 
 The npm package is intentionally limited to the installable adapter surface:
 - runtime source in `src/`

@@ -75,3 +75,20 @@ test('paid mode fails closed on non-2xx PDP non-JSON responses', async () => {
     server.close();
   }
 });
+
+test('paid mode surfaces SDE guidance when using the local fallback PDP without SDE', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error('fetch failed'); };
+  try {
+    const result = await evaluateCodexEvent(
+      { toolName: 'functions.shell_command', command: 'Get-Content README.md' },
+      { toolPolicyMode: 'PDP', failClosed: true }
+    );
+    assert.equal(result.decision, 'deny');
+    assert.equal(result.reasonCode, 'PDP_UNAVAILABLE_FAIL_CLOSED');
+    assert.match(result.error, /licensed SDE runtime/);
+    assert.match(result.error, /ALLOWLIST_ONLY/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

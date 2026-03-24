@@ -1,3 +1,5 @@
+import { maybeAppendSdeRuntimeGuidance } from './sdeGuidance.js';
+
 export function buildPdpPayload(config, request) {
   return {
     decision_sku: config.decisionSku,
@@ -42,6 +44,11 @@ export async function authorizeWithPdp(config, request) {
       status: response.status,
       body,
     };
+  } catch (error) {
+    const detail = error?.name === 'AbortError'
+      ? `PDP timeout after ${config.pdpTimeoutMs}ms`
+      : String(error?.message || error);
+    throw new Error(maybeAppendSdeRuntimeGuidance(detail, config.pdpUrl));
   } finally {
     clearTimeout(timeout);
   }
