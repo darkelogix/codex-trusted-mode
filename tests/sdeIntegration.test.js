@@ -6,7 +6,11 @@ import path from 'node:path';
 import { evaluateCodexEvent } from '../src/index.js';
 import { startLiveSdePdp } from './liveSdeHarness.js';
 
-test('live SDE integration allows readonly shell command for entitled Codex tenant', async () => {
+const runLiveSdeIntegration = process.env.RUN_LIVE_SDE_INTEGRATION === '1';
+const liveTest = runLiveSdeIntegration ? test : test.skip;
+
+// These tests require a local SDE repo and Python runtime.
+liveTest('live SDE integration allows readonly shell command for entitled Codex tenant', async () => {
   const server = await startLiveSdePdp({
     entitlements: {
       'trial-tenant': ['codex.trusted_mode.authorize.v1'],
@@ -50,7 +54,7 @@ test('live SDE integration allows readonly shell command for entitled Codex tena
   }
 });
 
-test('live SDE integration returns the real deny code for blocked Codex tools', async () => {
+liveTest('live SDE integration returns the real deny code for blocked Codex tools', async () => {
   const server = await startLiveSdePdp({
     entitlements: {
       'trial-tenant': ['codex.trusted_mode.authorize.v1'],
@@ -78,7 +82,7 @@ test('live SDE integration returns the real deny code for blocked Codex tools', 
   }
 });
 
-test('live SDE integration enforces Codex tenant policy variant locks', async () => {
+liveTest('live SDE integration enforces Codex tenant policy variant locks', async () => {
   const server = await startLiveSdePdp({
     entitlements: {
       'trial-tenant': ['codex.trusted_mode.authorize.v1'],
@@ -119,7 +123,7 @@ test('live SDE integration enforces Codex tenant policy variant locks', async ()
   }
 });
 
-test('live SDE integration reflects entitlement removal across sessions', async () => {
+liveTest('live SDE integration reflects entitlement removal across sessions', async () => {
   const firstServer = await startLiveSdePdp({
     entitlements: {
       'trial-tenant': ['codex.trusted_mode.authorize.v1'],
@@ -172,7 +176,7 @@ test('live SDE integration reflects entitlement removal across sessions', async 
   }
 });
 
-test('live SDE integration denies requests after the decision volume limit is exhausted', async () => {
+liveTest('live SDE integration denies requests after the decision volume limit is exhausted', async () => {
   const tempDir = await mkdtemp(path.join(os.tmpdir(), 'codex-volume-limit-'));
   const server = await startLiveSdePdp({
     entitlements: {

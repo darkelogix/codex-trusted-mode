@@ -22,8 +22,8 @@ jobs:
       run:
         shell: pwsh
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
       - run: npm run clean-room-smoke -- -EnvironmentLabel ${{ matrix.environment_label }} -CodexRuntime ${{ matrix.codex_runtime }}
@@ -38,11 +38,11 @@ jobs:
             releaseStatus = $gate.releaseStatus
           }
           $result | ConvertTo-Json -Depth 20 | Set-Content "compat-results/validated current workspace session.json"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: codex-compat-${{ matrix.environment_label }}
           path: compat-results/*.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: codex-matrix-${{ matrix.environment_label }}
           path: release-evidence/matrix/runs/*.json
@@ -50,8 +50,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: smoke
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
       - uses: actions/download-artifact@v4
@@ -61,7 +61,7 @@ jobs:
           path: compat-results
       - run: node scripts/update_compatibility_matrix.js
       - run: node scripts/update_compatibility_matrix.js --check
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: codex-compatibility-matrix
           path: COMPATIBILITY_MATRIX.md
