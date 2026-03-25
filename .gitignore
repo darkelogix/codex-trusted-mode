@@ -2,3 +2,7 @@
 .npm-cache/
 gh-artifacts/
 *.tgz
+
+# Local validation artifacts
+release-evidence/matrix/runs/*.json
+!release-evidence/matrix/runs/.gitkeep
