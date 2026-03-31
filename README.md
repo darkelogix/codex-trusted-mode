@@ -61,9 +61,9 @@ Current native bridge evidence:
 
 Default free posture:
 - `ALLOWLIST_ONLY`
-- allows `functions.shell_command` only for read-only command prefixes
+- allows `functions.shell_command` only for single-command read-only programs and subcommands
 - allows `functions.update_plan` and `functions.view_image`
-- blocks `functions.apply_patch` and mutating shell commands by default
+- blocks `functions.apply_patch`, shell chaining/redirection, and mutating shell commands by default
 
 This makes the standalone offering genuinely useful before any SDE deployment.
 

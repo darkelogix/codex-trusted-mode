@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- block shell commands that chain control operators or redirection behind an otherwise read-only prefix
+- tighten local allowlist evaluation to exact program and subcommand matches instead of raw string prefix matching
+- add PDP/mock-PDP regression coverage for chained shell command deny paths
+
 ## 0.1.0
 
 - created the initial Codex Trusted Mode repo

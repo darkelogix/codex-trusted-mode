@@ -1,5 +1,6 @@
 import { buildConfig, normalizeCertificationStatus, normalizeToolPolicyMode } from './config.js';
 import { normalizeCodexEvent } from './normalize.js';
+import { containsShellControlOperator, isAllowedReadonlyShellCommand } from './shellPolicy.js';
 import { createLocalTrace } from './trace.js';
 import { authorizeWithPdp } from './pdpClient.js';
 
@@ -19,9 +20,7 @@ function isShellCommandTool(toolName) {
 }
 
 function isAllowedShellCommand(command, prefixes) {
-  const normalized = String(command || '').trim().toLowerCase();
-  if (!normalized) return false;
-  return Array.isArray(prefixes) && prefixes.some((prefix) => normalized.startsWith(String(prefix).trim().toLowerCase()));
+  return isAllowedReadonlyShellCommand(command, prefixes);
 }
 
 export async function evaluateCodexEvent(event, overrides = {}) {
@@ -42,6 +41,15 @@ export async function evaluateCodexEvent(event, overrides = {}) {
   if (mode === 'ALLOWLIST_ONLY') {
     const allowed = containsTool(config.allowedTools, request.toolName);
     if (allowed && isShellCommandTool(request.toolName)) {
+      if (containsShellControlOperator(request.command)) {
+        return {
+          decision: 'deny',
+          reasonCode: 'LOCAL_SHELL_CONTROL_OPERATOR_BLOCK',
+          source: 'local',
+          request,
+          trace: createLocalTrace(config, request, 'deny', 'LOCAL_SHELL_CONTROL_OPERATOR_BLOCK'),
+        };
+      }
       const shellAllowed = isAllowedShellCommand(request.command, config.allowedShellCommandPrefixes);
       const reasonCode = shellAllowed ? 'LOCAL_READONLY_SHELL_ALLOW' : 'LOCAL_READONLY_SHELL_BLOCK';
       return {

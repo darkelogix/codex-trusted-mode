@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { containsShellControlOperator, isAllowedReadonlyShellCommand } from '../src/shellPolicy.js';
 
 const PORT = Number(process.env.MOCK_PDP_PORT || 8011);
 
@@ -28,17 +29,35 @@ function decide(request) {
   }
 
   if (toolName === 'functions.shell_command') {
-    if (
-      command.startsWith('get-childitem') ||
-      command.startsWith('get-content') ||
-      command.startsWith('rg') ||
-      command.startsWith('git status') ||
-      command.startsWith('git diff') ||
-      command.startsWith('git show') ||
-      command.startsWith('pwd') ||
-      command.startsWith('ls') ||
-      command.startsWith('cat')
-    ) {
+    const readonlyPrefixes = [
+      'Get-ChildItem',
+      'Get-Content',
+      'rg',
+      'git status',
+      'git diff',
+      'git show',
+      'pwd',
+      'ls',
+      'cat',
+    ];
+
+    if (containsShellControlOperator(command)) {
+      return {
+        decision: 'deny',
+        reasonCode: 'PDP_SHELL_CONTROL_OPERATOR_DENY',
+        trace: {
+          traceId: 'trace-codex-shell-deny-operators-001',
+          contractId: 'codex-tool-governance',
+          contractVersion: '0.1.0',
+          policyPackVersion: 'codex-tool-governance-pack.0.1.0',
+          decision: 'deny',
+          reasonCode: 'PDP_SHELL_CONTROL_OPERATOR_DENY',
+          timestampUtc: new Date().toISOString(),
+        },
+      };
+    }
+
+    if (isAllowedReadonlyShellCommand(command, readonlyPrefixes)) {
       return {
         decision: 'allow',
         reasonCode: 'PDP_READONLY_SHELL_ALLOW',
