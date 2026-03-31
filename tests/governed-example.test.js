@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { evaluateCodexEvent } from '../src/index.js';
-import { containsShellControlOperator, isAllowedReadonlyShellCommand } from '../src/shellPolicy.js';
+import { containsShellControlOperator, isAllowedReadonlyShellCommand, normalizeProgramName, tokenizeShellCommand } from '../src/shellPolicy.js';
 
 function startMockServer() {
   const server = http.createServer((req, res) => {
@@ -19,6 +19,13 @@ function startMockServer() {
         response = { decision: 'deny', reasonCode: 'PDP_PATCH_DENY', trace: { traceId: 't1' } };
       } else if (toolName === 'functions.shell_command' && containsShellControlOperator(command)) {
         response = { decision: 'deny', reasonCode: 'PDP_SHELL_CONTROL_OPERATOR_DENY', trace: { traceId: 't4' } };
+      } else if (
+        toolName === 'functions.shell_command' &&
+        ['bash', 'cmd', 'node', 'powershell', 'pwsh', 'python', 'python3', 'sh'].includes(
+          normalizeProgramName(tokenizeShellCommand(command)[0] || '')
+        )
+      ) {
+        response = { decision: 'deny', reasonCode: 'PDP_BROAD_INTERPRETER_DENY', trace: { traceId: 't5' } };
       } else if (
         toolName === 'functions.shell_command' &&
         isAllowedReadonlyShellCommand(command, ['Get-Content'])
@@ -80,6 +87,20 @@ test('governed mode denies shell control operators via PDP', async () => {
     );
     assert.equal(result.decision, 'deny');
     assert.equal(result.reasonCode, 'PDP_SHELL_CONTROL_OPERATOR_DENY');
+  } finally {
+    server.close();
+  }
+});
+
+test('governed mode denies broad interpreters via PDP', async () => {
+  const { server, url } = await startMockServer();
+  try {
+    const result = await evaluateCodexEvent(
+      { toolName: 'functions.shell_command', command: 'python script.py' },
+      { toolPolicyMode: 'PDP', pdpUrl: url, failClosed: true }
+    );
+    assert.equal(result.decision, 'deny');
+    assert.equal(result.reasonCode, 'PDP_BROAD_INTERPRETER_DENY');
   } finally {
     server.close();
   }

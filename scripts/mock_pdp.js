@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { containsShellControlOperator, isAllowedReadonlyShellCommand } from '../src/shellPolicy.js';
+import { evaluateReadonlyShellCommand } from '../src/shellPolicy.js';
 
 const PORT = Number(process.env.MOCK_PDP_PORT || 8011);
 
@@ -41,7 +41,8 @@ function decide(request) {
       'cat',
     ];
 
-    if (containsShellControlOperator(command)) {
+    const shellDecision = evaluateReadonlyShellCommand(command, readonlyPrefixes);
+    if (!shellDecision.allowed && shellDecision.denyKind === 'control_operator') {
       return {
         decision: 'deny',
         reasonCode: 'PDP_SHELL_CONTROL_OPERATOR_DENY',
@@ -57,7 +58,23 @@ function decide(request) {
       };
     }
 
-    if (isAllowedReadonlyShellCommand(command, readonlyPrefixes)) {
+    if (!shellDecision.allowed && shellDecision.denyKind === 'broad_interpreter') {
+      return {
+        decision: 'deny',
+        reasonCode: 'PDP_BROAD_INTERPRETER_DENY',
+        trace: {
+          traceId: 'trace-codex-shell-deny-interpreter-001',
+          contractId: 'codex-tool-governance',
+          contractVersion: '0.1.0',
+          policyPackVersion: 'codex-tool-governance-pack.0.1.0',
+          decision: 'deny',
+          reasonCode: 'PDP_BROAD_INTERPRETER_DENY',
+          timestampUtc: new Date().toISOString(),
+        },
+      };
+    }
+
+    if (shellDecision.allowed) {
       return {
         decision: 'allow',
         reasonCode: 'PDP_READONLY_SHELL_ALLOW',

@@ -63,7 +63,7 @@ Default free posture:
 - `ALLOWLIST_ONLY`
 - allows `functions.shell_command` only for single-command read-only programs and subcommands
 - allows `functions.update_plan` and `functions.view_image`
-- blocks `functions.apply_patch`, shell chaining/redirection, and mutating shell commands by default
+- blocks `functions.apply_patch`, shell chaining/redirection, broad interpreters, and mutating shell commands by default
 
 This makes the standalone offering genuinely useful before any SDE deployment.
 
@@ -79,6 +79,7 @@ Paid mode is where you add:
 - tenant and license entitlements
 - compatibility certification
 - governed traces and release evidence
+- deeper Guard Pro shell argument validation and governed command-policy semantics
 
 ## Quick Start
 

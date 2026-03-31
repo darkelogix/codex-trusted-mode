@@ -41,6 +41,15 @@ test('free mode blocks shell control operators even when the prefix looks readon
   assert.equal(result.reasonCode, 'LOCAL_SHELL_CONTROL_OPERATOR_BLOCK');
 });
 
+test('free mode blocks broad interpreters even when shell_command is allowed', async () => {
+  const result = await evaluateCodexEvent({
+    toolName: 'functions.shell_command',
+    command: 'python script.py',
+  });
+  assert.equal(result.decision, 'deny');
+  assert.equal(result.reasonCode, 'LOCAL_BROAD_INTERPRETER_BLOCK');
+});
+
 test('free mode blocks apply_patch', async () => {
   const result = await evaluateCodexEvent({ toolName: 'functions.apply_patch' });
   assert.equal(result.decision, 'deny');
