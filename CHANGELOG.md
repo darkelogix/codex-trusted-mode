@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.2
 
 - add a fixed free-mode safety floor that blocks broad interpreters and shell launcher commands before any standalone allowlist match
 - move richer per-command shell argument validation to the SDE Guard Pro pack so governed policy depth stays on the paid runtime side
