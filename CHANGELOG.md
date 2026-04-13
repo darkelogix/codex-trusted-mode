@@ -21,3 +21,4 @@
 - documented the free/paid product boundary
 - aligned the repo to the observed Codex tool surface
 - added a mock PDP, governed example flow, and initial release evidence artifacts
+

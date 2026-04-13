@@ -10,6 +10,12 @@ Install the public MIT adapter package with:
 npm install @darkelogix/codex-trusted-mode
 ```
 
+Supported packaged commands:
+- `codex-trusted-mode-bridge` for native Codex app-server approval callbacks over stdio JSON-RPC
+- `codex-trusted-mode-run-turn` for a minimal hosted Codex governed-turn validation flow
+
+Both commands read governed values from `$CODEX_HOME/config.toml` / `~/.codex/config.toml` by default, or from `--codex-config <path>`.
+
 ## What `npm install` gives you
 
 `npm install @darkelogix/codex-trusted-mode` gives you the MIT adapter layer, local hardening path, and mock-PDP examples only. It does not grant access to the proprietary SDE runtime, enterprise evidence packs, or commercial governed entitlements.
@@ -80,6 +86,12 @@ Paid mode is where you add:
 - compatibility certification
 - governed traces and release evidence
 - deeper Guard Pro shell argument validation and governed command-policy semantics
+
+For a supported end-to-end governed validation path, run Codex through the packaged hosted session:
+
+```bash
+codex-trusted-mode-run-turn --prompt "Read README.md and stop." --json
+```
 
 ## Quick Start
 
@@ -197,3 +209,6 @@ node scripts/verify_certification_gate.js
 This repo is MIT-licensed.
 
 The SDE enterprise runtime used for the paid governance mode is proprietary commercial software and is not granted by this repo's MIT license.
+
+
+

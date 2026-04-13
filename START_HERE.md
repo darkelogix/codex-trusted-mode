@@ -48,7 +48,13 @@ Switch `toolPolicyMode` to `PDP` only after:
 - the decision contract is agreed
 - fail-safe posture is explicitly chosen
 
-Then run:
+For a supported package-level governed validation path, use the native app-server runner that ships with the npm package:
+
+```bash
+codex-trusted-mode-run-turn --prompt "Read README.md and stop." --json
+```
+
+Repo-level deeper checks remain available with:
 
 ```bash
 node scripts/verify_pdp_request_shape.js
@@ -62,3 +68,7 @@ node scripts/run_governed_example.js
 - [PRODUCT_DEFINITION.md](./PRODUCT_DEFINITION.md)
 - [COMPATIBILITY_MATRIX.md](./COMPATIBILITY_MATRIX.md)
 - [RELEASE_EVIDENCE_TEMPLATE.md](./RELEASE_EVIDENCE_TEMPLATE.md)
+
+
+
+
