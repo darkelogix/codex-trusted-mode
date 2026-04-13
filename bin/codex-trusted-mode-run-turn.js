@@ -9,6 +9,7 @@ import {
   buildThreadStartRequest,
   buildTurnStartRequest,
   summarizeDynamicToolCallParams,
+  collectPostHocCommandExecutions,
   extractCompletedAgentMessage,
 } from '../src/appServerSession.js';
 import { evaluateAppServerApprovalRequest } from '../src/index.js';
@@ -45,6 +46,7 @@ const transcript = [];
 const agentMessages = [];
 const approvalRequests = [];
 const toolCallRequests = [];
+const postHocCommandExecutions = [];
 const observedMethods = new Set();
 const rawNotificationMethods = new Set();
 let threadId = '';
@@ -76,8 +78,16 @@ function finalize(child, status, extra = {}) {
     child.kill();
   } catch {}
 
+  const governanceGapDetected =
+    postHocCommandExecutions.length > 0 && approvalRequests.length === 0 && toolCallRequests.length === 0;
+  const warnings = [];
+  if (governanceGapDetected) {
+    warnings.push('Codex reported a commandExecution only after completion. No native pre-execution approval callback or tool-call hook was emitted for this turn.');
+  }
+  const finalStatus = status === 'completed' && governanceGapDetected ? 'completed_with_governance_gap' : status;
+
   const summary = {
-    status,
+    status: finalStatus,
     cwd,
     prompt,
     threadId,
@@ -85,9 +95,13 @@ function finalize(child, status, extra = {}) {
     approvalRequests,
     toolCallHandled: toolCallRequests.length > 0,
     toolCallRequests,
+    postHocCommandExecutionDetected: postHocCommandExecutions.length > 0,
+    postHocCommandExecutions,
+    governanceGapDetected,
     observedMethods: Array.from(observedMethods),
     rawNotificationMethods: Array.from(rawNotificationMethods),
     agentMessages,
+    warnings,
     ...extra,
   };
 
@@ -95,7 +109,7 @@ function finalize(child, status, extra = {}) {
 
   if (asJson) {
     console.log(JSON.stringify(summary, null, 2));
-    process.exit(status === 'completed' ? 0 : 1);
+    process.exit(finalStatus === 'completed' ? 0 : 1);
   }
 
   if (agentMessages.length > 0) {
@@ -108,10 +122,13 @@ function finalize(child, status, extra = {}) {
   if (toolCallRequests.length > 0) {
     console.log(`tool_calls=${toolCallRequests.map((entry) => entry.tool || 'unknown').join(',')}`);
   }
+  if (warnings.length > 0) {
+    console.log(`warnings=${warnings.join(' | ')}`);
+  }
   if (tracePath) {
     console.log(`trace_path=${tracePath}`);
   }
-  process.exit(status === 'completed' ? 0 : 1);
+  process.exit(finalStatus === 'completed' ? 0 : 1);
 }
 
 const child = spawn(codexLaunch.command, codexLaunch.args, {
@@ -151,6 +168,16 @@ rl.on('line', async (line) => {
     observedMethods.add(message.method);
     if (typeof message.id === 'undefined') {
       rawNotificationMethods.add(message.method);
+    }
+  }
+
+  const postHocExecutions = collectPostHocCommandExecutions(message);
+  if (postHocExecutions.length > 0) {
+    for (const execution of postHocExecutions) {
+      const key = JSON.stringify(execution);
+      if (!postHocCommandExecutions.some((existing) => JSON.stringify(existing) === key)) {
+        postHocCommandExecutions.push(execution);
+      }
     }
   }
 

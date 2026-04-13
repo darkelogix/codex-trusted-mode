@@ -10,5 +10,6 @@ export {
   buildThreadStartRequest,
   buildTurnStartRequest,
   summarizeDynamicToolCallParams,
+  collectPostHocCommandExecutions,
   extractCompletedAgentMessage,
 } from './appServerSession.js';

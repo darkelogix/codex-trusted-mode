@@ -80,6 +80,46 @@ export function summarizeDynamicToolCallParams(params = {}) {
   };
 }
 
+export function collectPostHocCommandExecutions(message = {}) {
+  if (message?.method !== 'rawResponseItem/completed') return [];
+
+  const executions = [];
+  const seenObjects = new Set();
+  const seenSummaries = new Set();
+
+  function visit(value) {
+    if (!value || typeof value !== 'object') return;
+    if (seenObjects.has(value)) return;
+    seenObjects.add(value);
+
+    if (value.type === 'commandExecution' && typeof value.command === 'string') {
+      const summary = {
+        command: value.command,
+        commandActions: Array.isArray(value.commandActions) ? value.commandActions : [],
+        callId: typeof value.callId === 'string' ? value.callId : '',
+        name: typeof value.name === 'string' ? value.name : '',
+        arguments: typeof value.arguments === 'undefined' ? null : value.arguments,
+        status: typeof value.status === 'string' ? value.status : '',
+      };
+      const key = JSON.stringify(summary);
+      if (!seenSummaries.has(key)) {
+        seenSummaries.add(key);
+        executions.push(summary);
+      }
+    }
+
+    if (Array.isArray(value)) {
+      for (const entry of value) visit(entry);
+      return;
+    }
+
+    for (const entry of Object.values(value)) visit(entry);
+  }
+
+  visit(message.params ?? message);
+  return executions;
+}
+
 export function extractCompletedAgentMessage(message) {
   if (message?.method !== 'item/completed') return '';
   const item = message.params?.item;

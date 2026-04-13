@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.7
+
+- fail hosted-runner validation loudly when Codex only surfaces readonly command execution after completion
+- expose post-hoc commandExecution summaries and governance-gap warnings in hosted-runner JSON output
+
 ## 0.1.6
 
 - enable raw app-server event capture in the hosted runner for readonly Codex turn debugging

@@ -7,6 +7,7 @@ import {
   buildThreadStartRequest,
   buildTurnStartRequest,
   summarizeDynamicToolCallParams,
+  collectPostHocCommandExecutions,
   extractCompletedAgentMessage,
 } from '../src/index.js';
 
@@ -98,6 +99,39 @@ test('summarizeDynamicToolCallParams keeps only the useful tool call fields', ()
       turnId: 'turn-1',
       arguments: { path: 'README.md' },
     },
+  );
+});
+
+test('collectPostHocCommandExecutions finds commandExecution payloads inside rawResponseItem/completed messages', () => {
+  assert.deepEqual(
+    collectPostHocCommandExecutions({
+      method: 'rawResponseItem/completed',
+      params: {
+        item: {
+          type: 'function_call',
+          name: 'shell_command',
+          arguments: '{"command":"Get-Content -Raw package.json"}',
+        },
+        nested: [
+          {
+            type: 'commandExecution',
+            command: '"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command \'Get-Content -Raw package.json\'',
+            commandActions: [{ type: 'exec', command: 'Get-Content -Raw package.json' }],
+            status: 'completed',
+          },
+        ],
+      },
+    }),
+    [
+      {
+        command: '"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command \'Get-Content -Raw package.json\'',
+        commandActions: [{ type: 'exec', command: 'Get-Content -Raw package.json' }],
+        callId: '',
+        name: '',
+        arguments: null,
+        status: 'completed',
+      },
+    ],
   );
 });
 
