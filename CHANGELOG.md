@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.8
+
+- detect post-hoc readonly execution from both `rawResponseItem/completed` local-shell items and completed thread commandExecution items
+- mark the hosted runner turn as a governance gap on the current Codex readonly path more reliably
+
 ## 0.1.7
 
 - fail hosted-runner validation loudly when Codex only surfaces readonly command execution after completion

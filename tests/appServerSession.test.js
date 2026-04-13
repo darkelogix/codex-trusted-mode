@@ -135,6 +135,35 @@ test('collectPostHocCommandExecutions finds commandExecution payloads inside raw
   );
 });
 
+test('collectPostHocCommandExecutions also finds local_shell_call payloads from raw response items', () => {
+  assert.deepEqual(
+    collectPostHocCommandExecutions({
+      method: 'rawResponseItem/completed',
+      params: {
+        item: {
+          type: 'local_shell_call',
+          status: 'completed',
+          call_id: 'call-raw-1',
+          action: {
+            type: 'exec',
+            command: ['Get-Content', '-Raw', 'package.json'],
+          },
+        },
+      },
+    }),
+    [
+      {
+        command: 'Get-Content -Raw package.json',
+        commandActions: [{ type: 'exec', command: 'Get-Content -Raw package.json' }],
+        callId: 'call-raw-1',
+        name: '',
+        arguments: null,
+        status: 'completed',
+      },
+    ],
+  );
+});
+
 test('extractCompletedAgentMessage returns only completed agent messages', () => {
   assert.equal(extractCompletedAgentMessage({ method: 'item/completed', params: { item: { type: 'agent_message', text: 'done' } } }), 'done');
   assert.equal(extractCompletedAgentMessage({ method: 'item/completed', params: { item: { type: 'commandExecution', text: 'nope' } } }), '');

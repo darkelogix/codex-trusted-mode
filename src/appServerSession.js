@@ -81,7 +81,8 @@ export function summarizeDynamicToolCallParams(params = {}) {
 }
 
 export function collectPostHocCommandExecutions(message = {}) {
-  if (message?.method !== 'rawResponseItem/completed') return [];
+  const method = String(message?.method || '');
+  if (method !== 'rawResponseItem/completed' && method !== 'item/completed') return [];
 
   const executions = [];
   const seenObjects = new Set();
@@ -99,6 +100,27 @@ export function collectPostHocCommandExecutions(message = {}) {
         callId: typeof value.callId === 'string' ? value.callId : '',
         name: typeof value.name === 'string' ? value.name : '',
         arguments: typeof value.arguments === 'undefined' ? null : value.arguments,
+        status: typeof value.status === 'string' ? value.status : '',
+      };
+      const key = JSON.stringify(summary);
+      if (!seenSummaries.has(key)) {
+        seenSummaries.add(key);
+        executions.push(summary);
+      }
+    }
+
+    if (value.type === 'local_shell_call' && value.action?.type === 'exec' && Array.isArray(value.action.command)) {
+      const summary = {
+        command: value.action.command.join(' '),
+        commandActions: [
+          {
+            type: value.action.type,
+            command: value.action.command.join(' '),
+          },
+        ],
+        callId: typeof value.call_id === 'string' ? value.call_id : '',
+        name: '',
+        arguments: null,
         status: typeof value.status === 'string' ? value.status : '',
       };
       const key = JSON.stringify(summary);
