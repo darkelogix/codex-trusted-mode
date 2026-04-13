@@ -2,6 +2,11 @@
 
 Codex Trusted Mode is a Codex-to-SDE integration layer for governed tool execution.
 
+Current public product boundary:
+- standalone free mode is available from the public npm package
+- destructive-action governance is validated through the hosted runner
+- readonly actions on current Codex builds can surface only after completion and are reported as governance gaps
+
 ## npm Package
 
 Install the public MIT adapter package with:
@@ -9,6 +14,18 @@ Install the public MIT adapter package with:
 ```bash
 npm install @darkelogix/codex-trusted-mode
 ```
+
+If you want the current controlled-rollout governed runner path, install the beta tag:
+
+```bash
+npm install @darkelogix/codex-trusted-mode@beta
+```
+
+Supported packaged commands:
+- `codex-trusted-mode-bridge` for native Codex app-server approval callbacks over stdio JSON-RPC
+- `codex-trusted-mode-run-turn` for the hosted governed-turn validation path
+
+Both commands read governed values from `$CODEX_HOME/config.toml` / `~/.codex/config.toml` by default, or from `--codex-config <path>`.
 
 ## What `npm install` gives you
 
@@ -25,47 +42,29 @@ The npm package is intentionally limited to the installable adapter surface:
 
 It does not include the proprietary SDE runtime, enterprise packs, or full engineering evidence tree.
 
-The product split is deliberate:
-- Free mode: useful standalone local hardening
-- Paid mode: optional SDE-backed governance with deterministic `allow`, `deny`, and `constrain` decisions
+## Controlled Rollout Status
 
-## What This Repo Is
+The current Codex governed path is a controlled rollout, not full parity with OpenClaw.
 
-This repo provides:
-- a local hardening engine for Codex tool events
-- a stable Codex decision contract
-- an optional PDP adapter for SDE authorization
-- a native app-server approval bridge for Codex approval callbacks
-- a standalone free demo path with evidence output
-- a runnable mock PDP and governed example flow
-- verification scripts for free-mode posture and PDP request shape
-- release/evidence scaffolding for a future production offering
-
-This repo does not claim a native Codex extension API that has not been validated yet. It gives you the enforcement core and integration contract first, which is the correct technical foundation.
-
-What is now validated:
-- native Codex JSONL runtime stream capture
-- native app-server approval request schemas for command execution and file changes
+What is validated live today:
+- native Codex app-server approval callbacks for destructive actions such as command execution and file changes
 - bridge logic that maps those approval requests into Codex Trusted Mode decisions
-- a live end-to-end app-server session where Codex emits a native `item/commandExecution/requestApproval` callback and accepts the returned decision
+- hosted-runner denial of destructive actions through SDE-backed policy
+- explicit governance-gap detection when readonly execution is only surfaced after completion
 
-Current native bridge evidence:
-- [release-evidence/native-approval-bridge-demo-results.json](./release-evidence/native-approval-bridge-demo-results.json)
-- [release-evidence/app-server-bridge-stdio-smoke.jsonl](./release-evidence/app-server-bridge-stdio-smoke.jsonl)
-- [release-evidence/live-app-server-session-summary.json](./release-evidence/live-app-server-session-summary.json)
-- [release-evidence/live-native-approval-capture-repo.txt](./release-evidence/live-native-approval-capture-repo.txt)
-- [release-evidence/native-hook-evidence.json](./release-evidence/native-hook-evidence.json)
-- [release-evidence/20260306-certified-enforced-summary.md](./release-evidence/20260306-certified-enforced-summary.md)
+What is not claimed on current Codex builds:
+- full pre-execution governance parity for readonly actions
+- broader certified-enforced claims across all Codex builds or platforms
 
 ## Free Mode
 
 Default free posture:
 - `ALLOWLIST_ONLY`
-- allows `functions.shell_command` only for read-only command prefixes
+- allows `functions.shell_command` only for single-command read-only programs and subcommands
 - allows `functions.update_plan` and `functions.view_image`
-- blocks `functions.apply_patch` and mutating shell commands by default
+- blocks `functions.apply_patch`, shell chaining/redirection, broad interpreters, and mutating shell commands by default
 
-This makes the standalone offering genuinely useful before any SDE deployment.
+This makes the standalone offering useful before any SDE deployment.
 
 ## Paid Mode
 
@@ -79,6 +78,17 @@ Paid mode is where you add:
 - tenant and license entitlements
 - compatibility certification
 - governed traces and release evidence
+- deeper Guard Pro shell argument validation and governed command-policy semantics
+
+For the current supported governed validation path, run Codex through the packaged hosted session runner from the beta tag:
+
+```bash
+codex-trusted-mode-run-turn --prompt "Delete package.json." --json
+```
+
+Expected current boundary on supported Codex builds:
+- destructive actions can trigger native approval callbacks and be governed live
+- readonly actions that do not emit a pre-execution hook are returned as `completed_with_governance_gap`
 
 ## Quick Start
 
@@ -99,18 +109,6 @@ node scripts/verify_certification_gate.js
 node --test
 ```
 
-On Linux without PowerShell, run the clean-room baseline with:
-
-```bash
-npm run clean-room-smoke:linux -- ubuntu-vm-first-pass codex-current
-```
-
-For a full fresh-Ubuntu first pass, use the one-shot bootstrap:
-
-```bash
-npm run ubuntu-first-pass
-```
-
 5. Run the standalone free demo:
 
 ```bash
@@ -129,48 +127,17 @@ node scripts/evaluate_event.js --event examples/readonly-shell-event.json --conf
 node scripts/evaluate_app_server_request.js --input examples/native-command-approval-request.json
 ```
 
-8. Run the bridge demo evidence flow:
+8. Run the governed validation path through the hosted runner:
 
 ```bash
-node scripts/run_native_bridge_demo.js
+codex-trusted-mode-run-turn --prompt "Delete package.json." --json
 ```
 
-9. Smoke-test the stdio JSON-RPC bridge:
+9. Review the compatibility and rollout boundary before making broader claims:
 
-```bash
-powershell -ExecutionPolicy Bypass -File scripts/run_app_server_bridge_smoke.ps1
-```
-
-10. Run the governed example with the mock PDP:
-
-```bash
-node scripts/mock_pdp.js
-node scripts/run_governed_example.js
-```
-
-11. Try the live app-server session harness:
-
-```bash
-powershell -ExecutionPolicy Bypass -File scripts/capture_live_app_server_session.ps1
-```
-
-On Linux, use the Node harness directly:
-
-```bash
-npm run capture-live-app-server-session:node
-```
-
-Current harness status:
-- `initialize` succeeds
-- post-init requests are sent
-- real native approval callback evidence has been captured from a live repo-root Codex app-server session
-
-12. Review or refresh the final certification evidence:
-
-```bash
-node scripts/capture_native_hook_evidence.js --input release-evidence/native-hook-callback-raw.json --source real_runtime
-node scripts/verify_certification_gate.js
-```
+- [COMPATIBILITY_MATRIX.md](./COMPATIBILITY_MATRIX.md)
+- [START_HERE.md](./START_HERE.md)
+- [FREE_MODE.md](./FREE_MODE.md)
 
 ## Key Files
 
@@ -181,15 +148,8 @@ node scripts/verify_certification_gate.js
 - [OBSERVED_TOOL_SURFACE.md](./OBSERVED_TOOL_SURFACE.md)
 - [LICENSING.md](./LICENSING.md)
 - [src/appServerBridge.js](./src/appServerBridge.js)
-- [examples/codex-hook-adapter.js](./examples/codex-hook-adapter.js)
-- [release-evidence/native-hook-evidence.template.json](./release-evidence/native-hook-evidence.template.json)
 - [NATIVE_HOOK_WORKFLOW.md](./NATIVE_HOOK_WORKFLOW.md)
-
-## Initial Product Boundary
-
-- Free: local workstation hardening
-- Paid: customer-controlled SDE PDP governance
-- Enterprise services: separate engagement, not part of the self-serve product
+- [COMPATIBILITY_MATRIX.md](./COMPATIBILITY_MATRIX.md)
 
 ## Licensing
 

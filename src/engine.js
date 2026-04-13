@@ -1,5 +1,6 @@
 import { buildConfig, normalizeCertificationStatus, normalizeToolPolicyMode } from './config.js';
 import { normalizeCodexEvent } from './normalize.js';
+import { evaluateReadonlyShellCommand } from './shellPolicy.js';
 import { createLocalTrace } from './trace.js';
 import { authorizeWithPdp } from './pdpClient.js';
 
@@ -18,10 +19,15 @@ function isShellCommandTool(toolName) {
   return String(toolName || '').trim().toLowerCase() === 'functions.shell_command';
 }
 
-function isAllowedShellCommand(command, prefixes) {
-  const normalized = String(command || '').trim().toLowerCase();
-  if (!normalized) return false;
-  return Array.isArray(prefixes) && prefixes.some((prefix) => normalized.startsWith(String(prefix).trim().toLowerCase()));
+function mapShellDenyKindToReasonCode(denyKind) {
+  switch (denyKind) {
+    case 'control_operator':
+      return 'LOCAL_SHELL_CONTROL_OPERATOR_BLOCK';
+    case 'broad_interpreter':
+      return 'LOCAL_BROAD_INTERPRETER_BLOCK';
+    default:
+      return 'LOCAL_READONLY_SHELL_BLOCK';
+  }
 }
 
 export async function evaluateCodexEvent(event, overrides = {}) {
@@ -42,14 +48,16 @@ export async function evaluateCodexEvent(event, overrides = {}) {
   if (mode === 'ALLOWLIST_ONLY') {
     const allowed = containsTool(config.allowedTools, request.toolName);
     if (allowed && isShellCommandTool(request.toolName)) {
-      const shellAllowed = isAllowedShellCommand(request.command, config.allowedShellCommandPrefixes);
-      const reasonCode = shellAllowed ? 'LOCAL_READONLY_SHELL_ALLOW' : 'LOCAL_READONLY_SHELL_BLOCK';
+      const shellDecision = evaluateReadonlyShellCommand(request.command, config.allowedShellCommandPrefixes);
+      const reasonCode = shellDecision.allowed
+        ? 'LOCAL_READONLY_SHELL_ALLOW'
+        : mapShellDenyKindToReasonCode(shellDecision.denyKind);
       return {
-        decision: shellAllowed ? 'allow' : 'deny',
+        decision: shellDecision.allowed ? 'allow' : 'deny',
         reasonCode,
         source: 'local',
         request,
-        trace: createLocalTrace(config, request, shellAllowed ? 'allow' : 'deny', reasonCode),
+        trace: createLocalTrace(config, request, shellDecision.allowed ? 'allow' : 'deny', reasonCode),
       };
     }
     const reasonCode = allowed ? 'LOCAL_ALLOWLIST_ALLOW' : 'LOCAL_ALLOWLIST_BLOCK';

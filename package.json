@@ -1,17 +1,21 @@
 {
   "name": "@darkelogix/codex-trusted-mode",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "description": "Codex hardening and optional SDE-backed governance adapter",
   "license": "MIT",
   "type": "module",
   "main": "src/index.js",
+  "bin": {
+    "codex-trusted-mode-bridge": "./bin/codex-trusted-mode-bridge.js",
+    "codex-trusted-mode-run-turn": "./bin/codex-trusted-mode-run-turn.js"
+  },
   "exports": {
     ".": "./src/index.js"
   },
   "homepage": "https://www.darkelogix.ai/codex/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darkelogix/codex-trusted-mode.git"
+    "url": "git+https://github.com/darkelogix/codex-trusted-mode.git"
   },
   "bugs": {
     "url": "https://www.darkelogix.ai/contact/"
@@ -28,6 +32,7 @@
     "access": "public"
   },
   "files": [
+    "bin/",
     "src/",
     "examples/readonly-shell-event.json",
     "README.md",
@@ -55,6 +60,8 @@
     "evaluate-event": "node scripts/evaluate_event.js",
     "evaluate-app-server-request": "node scripts/evaluate_app_server_request.js",
     "native-bridge-demo": "node scripts/run_native_bridge_demo.js",
+    "bridge": "node bin/codex-trusted-mode-bridge.js",
+    "run-turn": "node bin/codex-trusted-mode-run-turn.js",
     "app-server-bridge-smoke": "pwsh -File scripts/run_app_server_bridge_smoke.ps1",
     "capture-live-app-server-session": "pwsh -File scripts/capture_live_app_server_session.ps1",
     "capture-live-app-server-session:node": "node scripts/capture_live_app_server_session.js",
