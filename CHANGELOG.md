@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.2
+## 0.1.3
 
 - add a fixed free-mode safety floor that blocks broad interpreters and shell launcher commands before any standalone allowlist match
 - move richer per-command shell argument validation to the SDE Guard Pro pack so governed policy depth stays on the paid runtime side
@@ -21,4 +21,5 @@
 - documented the free/paid product boundary
 - aligned the repo to the observed Codex tool surface
 - added a mock PDP, governed example flow, and initial release evidence artifacts
+
 
