@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5
+
+- launch the packaged hosted runner through cmd.exe on Windows so local beta installs can spawn Codex app-server correctly
+- surface spawn errors in the hosted runner summary for faster troubleshooting
+
 ## 0.1.4
 
 - make the packaged hosted Codex runner request the native approval path explicitly
@@ -27,6 +32,7 @@
 - documented the free/paid product boundary
 - aligned the repo to the observed Codex tool surface
 - added a mock PDP, governed example flow, and initial release evidence artifacts
+
 
 
 

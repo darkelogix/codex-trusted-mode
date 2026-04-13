@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildInitializeRequest, buildReadOnlySandboxPolicy, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/index.js';
+import { buildCodexAppServerSpawn, buildInitializeRequest, buildReadOnlySandboxPolicy, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/index.js';
 
 test('buildInitializeRequest emits the expected protocol shape', () => {
   assert.deepEqual(buildInitializeRequest('init-9'), {
@@ -23,6 +23,19 @@ test('buildReadOnlySandboxPolicy returns a read-only no-network policy', () => {
     type: 'readOnly',
     networkAccess: false,
   });
+});
+
+test('buildCodexAppServerSpawn returns a valid launch tuple for the current platform', () => {
+  const launch = buildCodexAppServerSpawn();
+  assert.equal(typeof launch.command, 'string');
+  assert.ok(Array.isArray(launch.args));
+  if (process.platform === 'win32') {
+    assert.match(launch.command.toLowerCase(), /cmd\.exe$/);
+    assert.deepEqual(launch.args, ['/d', '/s', '/c', 'codex.cmd app-server --listen stdio://']);
+  } else {
+    assert.equal(launch.command, 'codex');
+    assert.deepEqual(launch.args, ['app-server', '--listen', 'stdio://']);
+  }
 });
 
 test('buildThreadStartRequest includes approval policy and sandbox defaults', () => {

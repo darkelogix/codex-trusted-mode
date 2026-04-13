@@ -56,6 +56,20 @@ export function buildTurnStartRequest(id, threadId, prompt, cwd) {
   };
 }
 
+export function buildCodexAppServerSpawn() {
+  if (process.platform === 'win32') {
+    return {
+      command: process.env.ComSpec || 'cmd.exe',
+      args: ['/d', '/s', '/c', 'codex.cmd app-server --listen stdio://'],
+    };
+  }
+
+  return {
+    command: 'codex',
+    args: ['app-server', '--listen', 'stdio://'],
+  };
+}
+
 export function extractCompletedAgentMessage(message) {
   if (message?.method !== 'item/completed') return '';
   const item = message.params?.item;

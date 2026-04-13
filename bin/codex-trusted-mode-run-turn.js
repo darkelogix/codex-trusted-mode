@@ -2,7 +2,7 @@
 import path from 'node:path';
 import readline from 'node:readline';
 import { spawn } from 'node:child_process';
-import { buildInitializeRequest, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/appServerSession.js';
+import { buildCodexAppServerSpawn, buildInitializeRequest, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/appServerSession.js';
 import { evaluateAppServerApprovalRequest } from '../src/index.js';
 import { loadBridgeOverrides } from '../src/codexConfigFile.js';
 
@@ -30,7 +30,7 @@ const overrides = loadBridgeOverrides({
 const cwd = path.resolve(getFlag('--cwd') || process.cwd());
 const asJson = hasFlag('--json');
 const timeoutMs = Number.parseInt(getFlag('--timeout-ms') || '60000', 10);
-const codexCommand = process.platform === 'win32' ? 'codex.cmd' : 'codex';
+const codexLaunch = buildCodexAppServerSpawn();
 
 const transcript = [];
 const agentMessages = [];
@@ -85,7 +85,7 @@ function finalize(child, status, extra = {}) {
   process.exit(status === 'completed' ? 0 : 1);
 }
 
-const child = spawn(codexCommand, ['app-server', '--listen', 'stdio://'], {
+const child = spawn(codexLaunch.command, codexLaunch.args, {
   cwd,
   stdio: ['pipe', 'pipe', 'pipe'],
   shell: false,
@@ -160,6 +160,15 @@ rl.on('line', async (line) => {
     clearTimeout(timeout);
     finalize(child, 'completed', { finalNotification: 'turn/completed' });
   }
+});
+
+child.on('error', (error) => {
+  clearTimeout(timeout);
+  finalize(child, 'process_spawn_error', {
+    error: String(error.message || error),
+    spawnCommand: codexLaunch.command,
+    spawnArgs: codexLaunch.args,
+  });
 });
 
 child.on('exit', (code, signal) => {
