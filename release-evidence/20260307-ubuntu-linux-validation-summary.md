@@ -23,9 +23,7 @@ Additional Linux validation for `codex-trusted-mode` `0.1.0` beyond the original
 ## Primary Supporting Artifacts
 
 - [native-hook-evidence.json](./native-hook-evidence.json)
-- [../vm-artifacts/ubuntu-vm-native-hook-evidence.json](../vm-artifacts/ubuntu-vm-native-hook-evidence.json)
-- [../vm-artifacts/ubuntu-vm-live-app-server-session-summary.json](../vm-artifacts/ubuntu-vm-live-app-server-session-summary.json)
-- [../vm-artifacts/ubuntu-vm-first-pass-20260307-142859.json](../vm-artifacts/ubuntu-vm-first-pass-20260307-142859.json)
+- local Ubuntu validation artifacts retained outside the committed public evidence subset
 
 ## Conclusion
 

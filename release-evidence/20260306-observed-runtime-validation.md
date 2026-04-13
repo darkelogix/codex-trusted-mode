@@ -43,8 +43,7 @@ Plan-mode only:
 - `observed-tool-surface.json`
 - `20260306-free-demo-results.json`
 - `20260306-governed-example-results.json`
-- `codex-exec-capture.jsonl`
-- `live-native-approval-capture-repo.txt`
+- local raw capture artifacts retained outside the committed public evidence subset
 - `native-hook-evidence.json`
 - `20260306-certified-enforced-summary.md`
 

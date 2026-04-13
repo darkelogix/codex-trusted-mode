@@ -15,7 +15,7 @@
 - governed PDP validation:
   - [20260306-governed-example-results.json](./20260306-governed-example-results.json)
 - real native callback transcript:
-  - [live-native-approval-capture-repo.txt](./live-native-approval-capture-repo.txt)
+  - retained as a local regeneration artifact outside the committed public evidence subset
 - normalized native callback evidence:
   - [native-hook-evidence.json](./native-hook-evidence.json)
 

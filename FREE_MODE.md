@@ -35,7 +35,7 @@ node scripts/run_free_demo.js
 ```
 
 This writes:
-- `release-evidence/20260306-free-demo-results.json`
+- `release-evidence/<timestamped-free-demo-results>.json` or the current repo-level summary artifact used for release review
 
 ## What The Free Tier Does Not Include
 

@@ -1,6 +1,0 @@
-Sanitized public placeholder.
-
-The original native approval capture contained environment-specific paths,
-session metadata, repository names, and raw diff material. Those details were
-removed from the public evidence tree. Refer to internal controlled records for
-the original capture.

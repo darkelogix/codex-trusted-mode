@@ -6,3 +6,9 @@ gh-artifacts/
 # Local validation artifacts
 release-evidence/matrix/runs/*.json
 !release-evidence/matrix/runs/.gitkeep
+release-evidence/*.jsonl
+release-evidence/native-hook-callback-raw.json
+release-evidence/live-native-approval-capture-repo.txt
+release-evidence/live-native-approval-capture.txt
+release-evidence/native-approval-proof.tmp
+vm-artifacts/

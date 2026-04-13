@@ -36,12 +36,11 @@ Promotion beyond the current boundary requires:
 
 ## Evidence
 
+- [release-evidence/README.md](./release-evidence/README.md)
 - [release-evidence/native-hook-evidence.json](./release-evidence/native-hook-evidence.json)
-- [release-evidence/live-native-approval-capture-repo.txt](./release-evidence/live-native-approval-capture-repo.txt)
 - [release-evidence/20260306-certified-enforced-summary.md](./release-evidence/20260306-certified-enforced-summary.md)
-- [vm-artifacts/ubuntu-vm-native-hook-evidence.json](./vm-artifacts/ubuntu-vm-native-hook-evidence.json)
-- [vm-artifacts/ubuntu-vm-live-app-server-session-summary.json](./vm-artifacts/ubuntu-vm-live-app-server-session-summary.json)
-- [vm-artifacts/ubuntu-vm-first-pass-20260307-142859.json](./vm-artifacts/ubuntu-vm-first-pass-20260307-142859.json)
+- [release-evidence/20260307-ubuntu-linux-validation-summary.md](./release-evidence/20260307-ubuntu-linux-validation-summary.md)
+- [release-evidence/live-app-server-session-summary.json](./release-evidence/live-app-server-session-summary.json)
 
 ## Observed V1 Surface
 

@@ -1,9 +1,0 @@
-{
-  "capturedAtUtc": "2026-03-07T14:31:06.592Z",
-  "status": "captured",
-  "approvalHandled": true,
-  "commandDecision": "decline",
-  "transcriptPath": "release-evidence/live-app-server-session.jsonl",
-  "finalNotification": "turn/completed",
-  "threadId": "019cc8b5-6003-7ed0-8415-680f07024344"
-}
