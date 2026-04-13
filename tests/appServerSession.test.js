@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildInitializeRequest, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/index.js';
+import { buildInitializeRequest, buildReadOnlySandboxPolicy, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/index.js';
 
 test('buildInitializeRequest emits the expected protocol shape', () => {
   assert.deepEqual(buildInitializeRequest('init-9'), {
@@ -18,19 +18,26 @@ test('buildInitializeRequest emits the expected protocol shape', () => {
   });
 });
 
-test('buildThreadStartRequest includes cwd and stable defaults', () => {
-  assert.deepEqual(buildThreadStartRequest('thread-start-1', 'C:\\repo'), {
-    id: 'thread-start-1',
-    method: 'thread/start',
-    params: {
-      cwd: 'C:\\repo',
-      experimentalRawEvents: false,
-      persistExtendedHistory: false,
-    },
+test('buildReadOnlySandboxPolicy returns a read-only no-network policy', () => {
+  assert.deepEqual(buildReadOnlySandboxPolicy(), {
+    type: 'readOnly',
+    networkAccess: false,
   });
 });
 
-test('buildTurnStartRequest packages the user prompt for app-server', () => {
+test('buildThreadStartRequest includes approval policy and sandbox defaults', () => {
+  const result = buildThreadStartRequest('thread-start-1', 'C:\\repo');
+  assert.equal(result.id, 'thread-start-1');
+  assert.equal(result.method, 'thread/start');
+  assert.equal(result.params.cwd, 'C:\\repo');
+  assert.equal(result.params.approvalPolicy, 'untrusted');
+  assert.deepEqual(result.params.sandboxPolicy, { type: 'readOnly', networkAccess: false });
+  assert.equal(result.params.experimentalRawEvents, false);
+  assert.equal(result.params.persistExtendedHistory, false);
+  assert.match(result.params.threadId, /^codex-trusted-mode-thread-/);
+});
+
+test('buildTurnStartRequest packages the user prompt for app-server with approval policy', () => {
   assert.deepEqual(buildTurnStartRequest('turn-start-1', 'thread-1', 'Read README.md', 'C:\\repo'), {
     id: 'turn-start-1',
     method: 'turn/start',
@@ -44,6 +51,11 @@ test('buildTurnStartRequest packages the user prompt for app-server', () => {
         },
       ],
       cwd: 'C:\\repo',
+      approvalPolicy: 'untrusted',
+      sandboxPolicy: {
+        type: 'readOnly',
+        networkAccess: false,
+      },
     },
   });
 });

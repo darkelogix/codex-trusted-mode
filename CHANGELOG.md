@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.4
+
+- make the packaged hosted Codex runner request the native approval path explicitly
+- align the hosted runner with the proven read-only app-server sandbox posture
+- avoid the Windows shell deprecation warning by launching codex without shell mode
+
 ## 0.1.3
 
 - add a fixed free-mode safety floor that blocks broad interpreters and shell launcher commands before any standalone allowlist match
@@ -21,5 +27,6 @@
 - documented the free/paid product boundary
 - aligned the repo to the observed Codex tool surface
 - added a mock PDP, governed example flow, and initial release evidence artifacts
+
 
 

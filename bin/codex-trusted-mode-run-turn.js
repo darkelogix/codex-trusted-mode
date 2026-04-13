@@ -30,6 +30,7 @@ const overrides = loadBridgeOverrides({
 const cwd = path.resolve(getFlag('--cwd') || process.cwd());
 const asJson = hasFlag('--json');
 const timeoutMs = Number.parseInt(getFlag('--timeout-ms') || '60000', 10);
+const codexCommand = process.platform === 'win32' ? 'codex.cmd' : 'codex';
 
 const transcript = [];
 const agentMessages = [];
@@ -84,10 +85,10 @@ function finalize(child, status, extra = {}) {
   process.exit(status === 'completed' ? 0 : 1);
 }
 
-const child = spawn('codex', ['app-server', '--listen', 'stdio://'], {
+const child = spawn(codexCommand, ['app-server', '--listen', 'stdio://'], {
   cwd,
   stdio: ['pipe', 'pipe', 'pipe'],
-  shell: process.platform === 'win32',
+  shell: false,
 });
 
 child.stderr.on('data', (chunk) => {
@@ -169,4 +170,3 @@ child.on('exit', (code, signal) => {
 });
 
 send(child, buildInitializeRequest(`init-${nextId++}`));
-

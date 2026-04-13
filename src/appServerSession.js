@@ -14,12 +14,22 @@ export function buildInitializeRequest(id = 'init-1') {
   };
 }
 
+export function buildReadOnlySandboxPolicy() {
+  return {
+    type: 'readOnly',
+    networkAccess: false,
+  };
+}
+
 export function buildThreadStartRequest(id, cwd) {
   return {
     id,
     method: 'thread/start',
     params: {
+      threadId: `codex-trusted-mode-thread-${Date.now()}`,
       cwd: cwd || null,
+      approvalPolicy: 'untrusted',
+      sandboxPolicy: buildReadOnlySandboxPolicy(),
       experimentalRawEvents: false,
       persistExtendedHistory: false,
     },
@@ -40,6 +50,8 @@ export function buildTurnStartRequest(id, threadId, prompt, cwd) {
         },
       ],
       cwd: cwd || null,
+      approvalPolicy: 'untrusted',
+      sandboxPolicy: buildReadOnlySandboxPolicy(),
     },
   };
 }

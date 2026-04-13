@@ -1,6 +1,6 @@
 {
   "name": "@darkelogix/codex-trusted-mode",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Codex hardening and optional SDE-backed governance adapter",
   "license": "MIT",
   "type": "module",
