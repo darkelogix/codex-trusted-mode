@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildCodexAppServerSpawn, buildInitializeRequest, buildReadOnlySandboxPolicy, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/index.js';
+import {
+  buildCodexAppServerSpawn,
+  buildInitializeRequest,
+  buildReadOnlySandboxPolicy,
+  buildThreadStartRequest,
+  buildTurnStartRequest,
+  summarizeDynamicToolCallParams,
+  extractCompletedAgentMessage,
+} from '../src/index.js';
 
 test('buildInitializeRequest emits the expected protocol shape', () => {
   assert.deepEqual(buildInitializeRequest('init-9'), {
@@ -45,7 +53,7 @@ test('buildThreadStartRequest includes approval policy and sandbox defaults', ()
   assert.equal(result.params.cwd, 'C:\\repo');
   assert.equal(result.params.approvalPolicy, 'untrusted');
   assert.deepEqual(result.params.sandboxPolicy, { type: 'readOnly', networkAccess: false });
-  assert.equal(result.params.experimentalRawEvents, false);
+  assert.equal(result.params.experimentalRawEvents, true);
   assert.equal(result.params.persistExtendedHistory, false);
   assert.match(result.params.threadId, /^codex-trusted-mode-thread-/);
 });
@@ -71,6 +79,26 @@ test('buildTurnStartRequest packages the user prompt for app-server with approva
       },
     },
   });
+});
+
+test('summarizeDynamicToolCallParams keeps only the useful tool call fields', () => {
+  assert.deepEqual(
+    summarizeDynamicToolCallParams({
+      tool: 'functions.read_file',
+      callId: 'call-1',
+      threadId: 'thread-1',
+      turnId: 'turn-1',
+      arguments: { path: 'README.md' },
+      ignored: true,
+    }),
+    {
+      tool: 'functions.read_file',
+      callId: 'call-1',
+      threadId: 'thread-1',
+      turnId: 'turn-1',
+      arguments: { path: 'README.md' },
+    },
+  );
 });
 
 test('extractCompletedAgentMessage returns only completed agent messages', () => {

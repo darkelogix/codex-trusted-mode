@@ -30,7 +30,7 @@ export function buildThreadStartRequest(id, cwd) {
       cwd: cwd || null,
       approvalPolicy: 'untrusted',
       sandboxPolicy: buildReadOnlySandboxPolicy(),
-      experimentalRawEvents: false,
+      experimentalRawEvents: true,
       persistExtendedHistory: false,
     },
   };
@@ -67,6 +67,16 @@ export function buildCodexAppServerSpawn() {
   return {
     command: 'codex',
     args: ['app-server', '--listen', 'stdio://'],
+  };
+}
+
+export function summarizeDynamicToolCallParams(params = {}) {
+  return {
+    tool: typeof params.tool === 'string' ? params.tool : '',
+    callId: typeof params.callId === 'string' ? params.callId : '',
+    threadId: typeof params.threadId === 'string' ? params.threadId : '',
+    turnId: typeof params.turnId === 'string' ? params.turnId : '',
+    arguments: params.arguments ?? null,
   };
 }
 

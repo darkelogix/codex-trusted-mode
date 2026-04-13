@@ -1,8 +1,16 @@
 #!/usr/bin/env node
+import fs from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
 import { spawn } from 'node:child_process';
-import { buildCodexAppServerSpawn, buildInitializeRequest, buildThreadStartRequest, buildTurnStartRequest, extractCompletedAgentMessage } from '../src/appServerSession.js';
+import {
+  buildCodexAppServerSpawn,
+  buildInitializeRequest,
+  buildThreadStartRequest,
+  buildTurnStartRequest,
+  summarizeDynamicToolCallParams,
+  extractCompletedAgentMessage,
+} from '../src/appServerSession.js';
 import { evaluateAppServerApprovalRequest } from '../src/index.js';
 import { loadBridgeOverrides } from '../src/codexConfigFile.js';
 
@@ -18,7 +26,7 @@ function hasFlag(name) {
 
 const prompt = getFlag('--prompt');
 if (!prompt) {
-  console.error('Usage: codex-trusted-mode-run-turn --prompt <text> [--cwd <path>] [--codex-config <config.toml>] [--config <overrides.json>] [--json]');
+  console.error('Usage: codex-trusted-mode-run-turn --prompt <text> [--cwd <path>] [--codex-config <config.toml>] [--config <overrides.json>] [--trace-path <session.json>] [--json]');
   process.exit(1);
 }
 
@@ -28,6 +36,7 @@ const overrides = loadBridgeOverrides({
   appId: getFlag('--app-id') || 'codex-trusted-mode',
 });
 const cwd = path.resolve(getFlag('--cwd') || process.cwd());
+const tracePath = getFlag('--trace-path') ? path.resolve(getFlag('--trace-path')) : '';
 const asJson = hasFlag('--json');
 const timeoutMs = Number.parseInt(getFlag('--timeout-ms') || '60000', 10);
 const codexLaunch = buildCodexAppServerSpawn();
@@ -35,6 +44,9 @@ const codexLaunch = buildCodexAppServerSpawn();
 const transcript = [];
 const agentMessages = [];
 const approvalRequests = [];
+const toolCallRequests = [];
+const observedMethods = new Set();
+const rawNotificationMethods = new Set();
 let threadId = '';
 let completed = false;
 let nextId = 1;
@@ -52,6 +64,11 @@ function send(child, message) {
   child.stdin.write(`${JSON.stringify(message)}\n`);
 }
 
+function persistTrace(summary) {
+  if (!tracePath) return;
+  fs.writeFileSync(tracePath, JSON.stringify({ summary, transcript }, null, 2));
+}
+
 function finalize(child, status, extra = {}) {
   if (completed) return;
   completed = true;
@@ -66,9 +83,15 @@ function finalize(child, status, extra = {}) {
     threadId,
     approvalHandled: approvalRequests.length > 0,
     approvalRequests,
+    toolCallHandled: toolCallRequests.length > 0,
+    toolCallRequests,
+    observedMethods: Array.from(observedMethods),
+    rawNotificationMethods: Array.from(rawNotificationMethods),
     agentMessages,
     ...extra,
   };
+
+  persistTrace(summary);
 
   if (asJson) {
     console.log(JSON.stringify(summary, null, 2));
@@ -81,6 +104,12 @@ function finalize(child, status, extra = {}) {
   console.log(`status=${status}`);
   if (approvalRequests.length > 0) {
     console.log(`approval_decisions=${approvalRequests.map((entry) => entry.response.decision).join(',')}`);
+  }
+  if (toolCallRequests.length > 0) {
+    console.log(`tool_calls=${toolCallRequests.map((entry) => entry.tool || 'unknown').join(',')}`);
+  }
+  if (tracePath) {
+    console.log(`trace_path=${tracePath}`);
   }
   process.exit(status === 'completed' ? 0 : 1);
 }
@@ -118,6 +147,13 @@ rl.on('line', async (line) => {
 
   record('server->client', message);
 
+  if (typeof message.method === 'string') {
+    observedMethods.add(message.method);
+    if (typeof message.id === 'undefined') {
+      rawNotificationMethods.add(message.method);
+    }
+  }
+
   if (message.id && message.result?.userAgent) {
     send(child, buildThreadStartRequest(`thread-start-${nextId++}`, cwd));
     return;
@@ -139,6 +175,22 @@ rl.on('line', async (line) => {
     approvalRequests.push({
       method: message.method,
       toolName: result.event?.toolName || '',
+      decision: result.evaluation?.decision || '',
+      reasonCode: result.evaluation?.reasonCode || '',
+      response: result.response,
+    });
+    send(child, {
+      id: message.id,
+      result: result.response,
+    });
+    return;
+  }
+
+  if (message.method === 'item/tool/call') {
+    const result = await evaluateAppServerApprovalRequest(message, overrides);
+    toolCallRequests.push({
+      method: message.method,
+      ...summarizeDynamicToolCallParams(message.params),
       decision: result.evaluation?.decision || '',
       reasonCode: result.evaluation?.reasonCode || '',
       response: result.response,

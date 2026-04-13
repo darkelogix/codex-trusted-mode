@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.6
+
+- enable raw app-server event capture in the hosted runner for readonly Codex turn debugging
+- surface `item/tool/call` traffic, observed methods, and optional JSON traces from `codex-trusted-mode-run-turn`
+
 ## 0.1.5
 
 - launch the packaged hosted runner through cmd.exe on Windows so local beta installs can spawn Codex app-server correctly
