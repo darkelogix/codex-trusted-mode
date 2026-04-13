@@ -1,5 +1,9 @@
 # Codex Trusted Mode
 
+[![npm version](https://img.shields.io/npm/v/%40darkelogix%2Fcodex-trusted-mode)](https://www.npmjs.com/package/@darkelogix/codex-trusted-mode)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![CI](https://github.com/darkelogix/codex-trusted-mode/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/darkelogix/codex-trusted-mode/actions/workflows/ci.yml)
+
 Codex Trusted Mode is a Codex-to-SDE integration layer for governed tool execution.
 
 Current public product boundary:
