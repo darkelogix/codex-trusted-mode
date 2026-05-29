@@ -21,6 +21,7 @@ enabled = false
 enabled = true
 toolPolicyMode = "PDP"
 pdpUrl = "http://10.90.0.6:8001/v1/authorize"
+pdpAuthToken = "test-token"
 failClosed = true
 pdpTimeoutMs = 5000
 allowedTools = ["functions.shell_command", "functions.update_plan"]
@@ -30,6 +31,7 @@ allowedTools = ["functions.shell_command", "functions.update_plan"]
     enabled: true,
     toolPolicyMode: 'PDP',
     pdpUrl: 'http://10.90.0.6:8001/v1/authorize',
+    pdpAuthToken: 'test-token',
     failClosed: true,
     pdpTimeoutMs: 5000,
     allowedTools: ['functions.shell_command', 'functions.update_plan'],

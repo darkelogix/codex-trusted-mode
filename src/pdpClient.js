@@ -13,13 +13,22 @@ export function buildPdpPayload(config, request) {
   };
 }
 
+export function buildPdpHeaders(config) {
+  const headers = { 'content-type': 'application/json' };
+  const token = typeof config.pdpAuthToken === 'string' ? config.pdpAuthToken.trim() : '';
+  if (token) {
+    headers.authorization = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 export async function authorizeWithPdp(config, request) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), config.pdpTimeoutMs);
   try {
     const response = await fetch(config.pdpUrl, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: buildPdpHeaders(config),
       body: JSON.stringify(buildPdpPayload(config, request)),
       signal: controller.signal,
     });

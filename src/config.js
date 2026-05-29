@@ -48,6 +48,10 @@ export function buildConfig(overrides = {}) {
     failClosed: overrides.failClosed !== false,
     pdpUrl: typeof overrides.pdpUrl === 'string' ? overrides.pdpUrl : 'http://localhost:8001/v1/authorize',
     pdpTimeoutMs: Number.isFinite(overrides.pdpTimeoutMs) ? overrides.pdpTimeoutMs : 5000,
+    pdpAuthToken:
+      typeof overrides.pdpAuthToken === 'string'
+        ? overrides.pdpAuthToken
+        : process.env.PDP_AUTH_TOKEN || process.env.DEXGATE_PDP_AUTH_TOKEN || '',
     decisionSku:
       typeof overrides.decisionSku === 'string' ? overrides.decisionSku : 'codex.trusted_mode.authorize.v1',
     policyVariant:

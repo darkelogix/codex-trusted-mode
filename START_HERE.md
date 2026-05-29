@@ -3,7 +3,7 @@
 This repo supports two distinct customer paths:
 
 - npm-installed adapter with useful standalone hardening
-- separately licensed SDE-backed governed mode obtained through the Darkelogix customer console
+- separately licensed SDE-backed governed mode obtained through the dexgate customer console
 
 ## Objective
 
@@ -38,7 +38,7 @@ node scripts/run_free_demo.js
 
 ## Paid Governed Path
 
-Use this path only after you have licensed access to SDE through Darkelogix. The public npm package is the adapter layer; the customer console is the supported way to obtain the governed runtime, deployment materials, and instructions.
+Use this path only after you have licensed access to SDE through dexgate. The public npm package is the adapter layer; the customer console is the supported way to obtain the governed runtime, deployment materials, and instructions.
 
 For the current controlled-rollout governed runner path, install the beta tag:
 
@@ -48,6 +48,7 @@ npm install @dexgate/codex-trusted-mode@beta
 
 Switch `toolPolicyMode` to `PDP` only after:
 - the SDE PDP endpoint is available
+- `pdpAuthToken` or `PDP_AUTH_TOKEN` is configured for licensed PDP authentication
 - the decision contract is agreed
 - fail-safe posture is explicitly chosen
 - you accept the current Codex boundary for readonly actions on supported builds

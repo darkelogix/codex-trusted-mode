@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildConfig } from '../src/config.js';
 import { normalizeCodexEvent } from '../src/normalize.js';
-import { buildPdpPayload } from '../src/pdpClient.js';
+import { buildPdpHeaders, buildPdpPayload } from '../src/pdpClient.js';
 
 test('buildPdpPayload emits the SDE authorize envelope for Codex', () => {
   const config = buildConfig({ toolPolicyMode: 'PDP', tenantId: 'trial-tenant', environment: 'prod' });
@@ -24,5 +24,18 @@ test('buildPdpPayload emits the SDE authorize envelope for Codex', () => {
     inputs: {
       request,
     },
+  });
+});
+
+test('buildPdpHeaders adds bearer auth when pdpAuthToken is configured', () => {
+  assert.deepEqual(buildPdpHeaders({ pdpAuthToken: ' runtime-token ' }), {
+    'content-type': 'application/json',
+    authorization: 'Bearer runtime-token',
+  });
+});
+
+test('buildPdpHeaders omits bearer auth when pdpAuthToken is absent', () => {
+  assert.deepEqual(buildPdpHeaders({}), {
+    'content-type': 'application/json',
   });
 });

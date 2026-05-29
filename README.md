@@ -47,6 +47,12 @@ Governed mode config must include:
 
 Those values let dexgate match the correct workspace and environment host.
 
+For licensed governed deployments, also configure a PDP bearer token with either:
+- `pdpAuthToken` in the Codex trusted-mode config block
+- `PDP_AUTH_TOKEN` or `DEXGATE_PDP_AUTH_TOKEN` in the process environment
+
+When present, the adapter sends `Authorization: Bearer <token>` on PDP requests.
+
 The npm package is intentionally limited to the installable adapter surface:
 - runtime source in `src/`
 - baseline configs
